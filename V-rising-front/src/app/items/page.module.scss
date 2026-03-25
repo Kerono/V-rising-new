@@ -1,0 +1,26 @@
+$base-gap: 8px;
+
+.wrapper {
+  max-width: 60rem;
+  padding: 12px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $base-gap;
+
+  .title {
+    margin-bottom: $base-gap;
+    font-weight: bold;
+  }
+  .content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: $base-gap;
+  }
+
+  .skeletons-card-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: $base-gap;
+  }
+}

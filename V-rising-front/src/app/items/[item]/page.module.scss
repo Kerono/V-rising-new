@@ -1,0 +1,69 @@
+$base-gap: 8px;
+
+.wrapper {
+  max-width: 60rem;
+  padding: 12px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: $base-gap;
+
+  .content {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: $base-gap;
+  }
+
+  .table-wrapper {
+    display: grid;
+    border: 1px solid gray;
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+    background-color: gray;
+    gap: 1px;
+    color: var(--text-color);
+    > * {
+      background-color: var(--background);
+      padding: 12px;
+    }
+
+    .items-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .items {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-color);
+    }
+  }
+
+  .skeleton-wrapper {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $base-gap;
+  }
+
+  .title {
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+
+  .enemies-wrapper {
+    margin: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+}

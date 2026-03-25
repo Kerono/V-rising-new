@@ -1,0 +1,16 @@
+@keyframes loading-state {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.card {
+  background: linear-gradient(to right, #edf3f6, #b2b3b3, #edf3f6);
+  background-size: 200% 200%;
+  animation: loading-state 3s infinite ease-in-out alternate;
+  border-radius: 8px;
+}

@@ -1,0 +1,37 @@
+$base-gap: 8px;
+
+.wrapper {
+  max-width: 60rem;
+  padding: 12px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: $base-gap;
+
+  .title {
+    font-size: 18px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $base-gap;
+    flex: 1;
+  }
+  .skeletons-wrapper {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: $base-gap;
+  }
+}
+
+@media (max-width: 500px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .skeletons-wrapper {
+    width: 100%;
+  }
+}

@@ -1,0 +1,25 @@
+.mobile {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+
+  .logo-link {
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: none;
+    color: var(--text-color);
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .img-wrapper {
+    display: flex;
+    padding: 8px;
+    color: var(--text-color);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+}

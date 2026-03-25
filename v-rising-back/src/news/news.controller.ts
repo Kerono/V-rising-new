@@ -1,0 +1,24 @@
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { NewsListService } from './news.service';
+import { SpecificNewsInfoDto } from 'src/dto/news.dto';
+
+async function delay() {
+  return new Promise((resolve) => {
+    setTimeout(resolve, 500);
+  });
+}
+@Controller('news')
+export class NewsController {
+  constructor(private newsListService: NewsListService) {}
+  @Get()
+  async getNewsPerPage(@Query('page') page: string) {
+    await delay();
+    return this.newsListService.getNewsPerPage(page);
+  }
+  @Get(':id')
+  async getSpecificNewsInfo(@Param() specificNewsInfoDto: SpecificNewsInfoDto) {
+    await delay();
+    const { id } = specificNewsInfoDto;
+    return this.newsListService.getSpecificNewsInfo(id);
+  }
+}

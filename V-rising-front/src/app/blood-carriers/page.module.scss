@@ -1,0 +1,29 @@
+.wrapper {
+  max-width: 60rem;
+  padding: 12px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .title {
+    font-weight: bold;
+  }
+
+  .table-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 1px;
+    border: 1px solid gray;
+    background-color: gray;
+    color: var(--text-color);
+    > * {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      background-color: var(--background);
+    }
+  }
+}
