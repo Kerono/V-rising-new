@@ -1,9 +1,9 @@
 import styles from "./page.module.scss";
-import { getAllResources } from "@/server/actions";
+import { getResources } from "@/server/actions";
 import { Card } from "@/components/Card";
 
 const Page = async () => {
-  const data = await getAllResources();
+  const data = await getResources();
   const { resourcesGroups, resourcesList } = data;
 
   return (
@@ -16,7 +16,12 @@ const Page = async () => {
               {ids.map((id) => {
                 const { name, img } = resourcesList[id];
                 return (
-                  <Card key={id} href={`/items/${id}`} data={name} img={img} />
+                  <Card
+                    key={id}
+                    href={`/resources/${id}`}
+                    data={name}
+                    img={img}
+                  />
                 );
               })}
             </div>

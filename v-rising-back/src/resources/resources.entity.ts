@@ -26,20 +26,6 @@ export class Resources extends BaseEntity {
   img: string;
 }
 
-// @Entity()
-// export class Resources_Groups extends BaseEntity {
-//   @Column({
-//     type: 'int',
-//   })
-//   @PrimaryGeneratedColumn('uuid')
-//   id: string;
-//   @Column({ type: 'varchar' })
-//   title: string;
-
-//   @Column({ type: 'varchar' })
-//   items_id: string;
-// }
-
 @Entity()
 export class Resources_Enemies extends BaseEntity {
   @Column({
@@ -59,6 +45,44 @@ export class Resources_Enemies extends BaseEntity {
 
 @Entity()
 export class Resources_Categories extends BaseEntity {
+  @Column({
+    type: 'uuid',
+  })
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({
+    type: 'varchar',
+  })
+  name: string;
+}
+
+@Entity()
+export class Recipes extends BaseEntity {
+  @Column({
+    type: 'uuid',
+  })
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({
+    type: 'varchar',
+  })
+  recipe_id: string;
+
+  @Column({
+    type: 'varchar',
+  })
+  create_from_id: string;
+
+  @Column({
+    type: 'varchar',
+  })
+  result_id: string;
+}
+
+@Entity()
+export class Enemies extends BaseEntity {
   @Column({
     type: 'uuid',
   })

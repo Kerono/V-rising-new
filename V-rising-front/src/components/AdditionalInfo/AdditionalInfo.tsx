@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import type { Info } from "@/app/items/[item]/page";
+import type { Info } from "@/app/resources/[resourceId]/page";
 import styles from "./additionalInfo.module.scss";
 
 type Props = {

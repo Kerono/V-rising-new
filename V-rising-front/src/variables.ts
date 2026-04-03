@@ -86,22 +86,11 @@ export type WeaponsList = {
 };
 
 export type NewsList = {
-  id: NewsIds;
+  id: string;
   title: string;
-  //TODO на главное странице не используется но передается, оставлять?
   info: string;
   img: string;
 };
-
-export type NewsIds =
-  | "invaders-of-oakveil"
-  | "dev-update-30"
-  | "update-1.1"
-  | "invaders-of-oakveil-start-date"
-  | "dev-update-29"
-  | "dev-update-28"
-  | "art-contest-winners"
-  | "invaders-of-oakveil-gameplay";
 
 export type Regions = {
   img: string;
@@ -112,105 +101,44 @@ export type Regions = {
   }[];
 };
 
-type Item = {
-  name: string;
-  img: string;
-  id: ResourceIds;
-  description: string;
-};
-
-export type ResourceIds =
-  | "simple-wood"
-  | "hallow-wood"
-  | "simple-stone"
-  | "stone-dust"
-  | "copper-ore"
-  | "iron-ore"
-  | "plank"
-  | "sawdust"
-  | "oil"
-  | "fish-bone"
-  | "fish"
-  | "whetstone"
-  | "copper-ingot"
-  | "iron-ingot"
-  | "reinforced-plank"
-  | "bone"
-  | "grave-dust"
-  | "rugged-hide"
-  | "leather";
-
 export type ResourcesGroups = {
   title: string;
-  ids: ResourceIds[];
+  ids: string[];
 };
-
-type EnemiesIds =
-  | "treant"
-  | "flesh-golem"
-  | "emery-golem"
-  | "iron-golem"
-  | "stone-golem"
-  | "blood-elemental"
-  | "skeleton"
-  | "banshee"
-  | "ghoul"
-  | "bear";
 
 type Enemy = {
   name: string;
-  id: EnemiesIds;
+  id: string;
 };
 
 export type EnemiesList = {
-  [keys in EnemiesIds]: Enemy;
+  [keys: string]: Enemy;
 };
-
-type Caregory = "Material" | "Alchemy" | "Fish" | "Tailoring";
 
 export type RecipesList = {
-  recipe: ResourceIds[];
-  resultItems: ResourceIds[];
-};
-
-type ResourcesRecipesIds =
-  | "simple-wood-recipe"
-  | "hallow-wood-recipe"
-  | "simple-stone-recipe"
-  | "stone-dust-recipe"
-  | "copper-ore-recipe"
-  | "iron-ore-recipe"
-  | "plank-recipe"
-  | "sawdust-recipe"
-  | "oil-recipe"
-  | "fish-bone-recipe"
-  | "fish-recipe"
-  | "whetstone-recipe"
-  | "copper-ingot-recipe"
-  | "iron-ingot-recipe"
-  | "reinforced-plank-recipe"
-  | "bone-recipe"
-  | "grave-dust-recipe"
-  | "rugged-hide-recipe"
-  | "leather-recipe";
-
-export type ResourcesFullInfo = Item & {
-  category: Caregory;
-  isTeleportable: boolean;
-  stackSize: number;
-  groups: {
-    enemiesList: EnemiesIds[];
-    //TODO dont know mby dont needed cause cant see where used
-    resoursesList: ResourcesRecipesIds;
+  [recipeName: string]: {
+    createFromIds: string[];
+    resultId: string[];
   };
 };
 
-export type BriefResourcesInfo = {
-  [id in ResourceIds]: Item;
+export type ResourcesFullDetails = {
+  name: string;
+  img: string;
+  id: string;
+  description: string;
+  category: string;
+  isTeleportable: boolean;
+  stackSize: number;
+  enemiesListIds: string[];
+};
+
+export type ResourcesInfo = {
+  [id: string]: ResourcesFullDetails;
 };
 
 export type ResourcesList = {
-  [id in ResourceIds]: ResourcesFullInfo;
+  [id: string]: ResourcesFullDetails;
 };
 
 type ShapeshiftingPowersIds = "wolf-form" | "bear-form" | "rat-form";
@@ -265,7 +193,7 @@ type Bosses = {
   level: number;
   rewards: {
     skills?: SkillsFullInfoIds[];
-    drop: ResourceIds[];
+    drop: string[];
     recipes?: TypesOfWeaponIds[];
   };
   attacks: string[];

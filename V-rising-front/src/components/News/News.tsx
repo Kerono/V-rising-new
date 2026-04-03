@@ -17,7 +17,6 @@ export const News: FC<Props> = ({ initialData, totalCount }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [news, setNews] = useState<NewsList[]>(initialData);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(news);
   const handleClick = async () => {
     setIsLoading(true);
     const nextPage = currentPage + 1;

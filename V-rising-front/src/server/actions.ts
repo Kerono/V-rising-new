@@ -3,11 +3,9 @@ import type {
   RecipesList,
   BriefDescriptionBosses,
   NewsList,
-  NewsIds,
   Regions,
   WeaponsList,
   ResourcesGroups,
-  ResourceIds,
   ResourcesList,
   EnemiesList,
   SkillsBriefDescription,
@@ -16,7 +14,7 @@ import type {
   SkillsFullInfoIds,
   BossesList,
   BossesIds,
-  BriefResourcesInfo,
+  ResourcesInfo,
 } from "@/variables";
 
 type GetNews = {
@@ -25,15 +23,13 @@ type GetNews = {
 };
 
 export async function getNews(page: number): Promise<GetNews> {
-  //TODO логика отображения страниц
   const response = await fetch(`${baseUrl}news?page=${page}`);
   const data: GetNews = await response.json();
-  console.log(data);
 
   return data;
 }
 
-export async function getSpecificNews(endpoint: NewsIds): Promise<NewsList> {
+export async function getSpecificNews(endpoint: string): Promise<NewsList> {
   const response = await fetch(`${baseUrl}news/${endpoint}`);
   if (!response.ok) {
     throw response.json();
@@ -49,28 +45,32 @@ export async function getRegions(): Promise<Regions> {
   return data;
 }
 
-type AllItems = {
+type AllResources = {
   resourcesGroups: ResourcesGroups[];
-  resourcesList: BriefResourcesInfo;
+  resourcesList: ResourcesInfo;
 };
 
-export async function getAllResources(): Promise<AllItems> {
+//TODO rename
+export async function getResources(): Promise<AllResources> {
   const response = await fetch(`${baseUrl}resources`);
-  const data: AllItems = await response.json();
+  const data: AllResources = await response.json();
   console.log(data);
   return data;
 }
 
-type SpecificItem = {
-  id: ResourceIds;
+export type ResourceResponce = {
+  id: string;
   enemiesList: EnemiesList;
   resourcesList: ResourcesList;
-  recipesList: RecipesList[];
+  createdFromRecepieIds: string[];
+  usedForRecepieIds: string[];
+  recipesList: RecipesList;
 };
 
-export async function getSpecificItem(endpoint: string): Promise<SpecificItem> {
-  const response = await fetch(`${baseUrl}/resource/${endpoint}`);
-  const data: SpecificItem = await response.json();
+export async function getResource(endpoint: string): Promise<ResourceResponce> {
+  const response = await fetch(`${baseUrl}resources/${endpoint}`);
+  const data: ResourceResponce = await response.json();
+  console.log(data);
   return data;
 }
 

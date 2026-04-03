@@ -1,12 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
   Resources,
   Resources_Enemies,
   Resources_Categories,
+  Recipes,
+  Enemies,
 } from './resources.entity';
 import { defaultUrl } from 'src/news/news.service';
+import type {
+  AllResourcesResp,
+  ResourcesFullInfo,
+  ResourcesGroups,
+  ResourceResponce,
+  EnemiesList,
+  RecipesResponce,
+  ResourcesList,
+} from './resources.types';
+import { clearDuplicates } from 'src/utils/helpers';
 
 @Injectable()
 export class ItemsService {
@@ -16,13 +28,16 @@ export class ItemsService {
     @InjectRepository(Resources_Enemies)
     private resourcesEnemiesRepository: Repository<Resources_Enemies>,
     @InjectRepository(Resources_Categories)
-    private resourcesCategories: Repository<Resources_Categories>,
+    private resourcesCategoriesRepository: Repository<Resources_Categories>,
+    @InjectRepository(Recipes)
+    private recipesRepository: Repository<Recipes>,
+    @InjectRepository(Enemies)
+    private enemiesRepository: Repository<Enemies>,
   ) {}
-  // : Promise<Resp>
-  async getAllResources(): Promise<Resp> {
-    const resources = this.resourcesRepository.createQueryBuilder('item');
+  async getResources(): Promise<AllResourcesResp> {
+    const resources = this.resourcesRepository.createQueryBuilder('resource');
     const resourcesCategories =
-      this.resourcesCategories.createQueryBuilder('categories');
+      this.resourcesCategoriesRepository.createQueryBuilder('categories');
 
     const allResourcesCategories = await resourcesCategories.getMany();
     const allResources = await resources.getMany();
@@ -30,14 +45,7 @@ export class ItemsService {
     const resourcesEnemiesQuery =
       this.resourcesEnemiesRepository.createQueryBuilder('resourceEnemy');
 
-    //TODO get only enemies included in items
-    // const resourceIds = allResources.map((i) => i.id);
-    // const resourcesEnemiesQuery =
-    //   this.resourcesEnemiesRepository.createQueryBuilder('resourceEnemy');
-    // .where('resourceEnemy.resource_id IN (:...ids)', { ids: resourceIds });
-
     const allResourcesEnemies = await resourcesEnemiesQuery.getMany();
-    console.log(allResourcesEnemies.length);
 
     const resourcesList: { [id: string]: ResourcesFullInfo } = {};
 
@@ -52,23 +60,195 @@ export class ItemsService {
         img,
       } = item;
 
-      //TODO try make better?
-      const category =
-        allResourcesCategories?.find(
-          (caregorie) => caregorie.id === category_id,
-        )?.name || '';
+      const category = allResourcesCategories.find(
+        (caregorie) => caregorie.id === category_id,
+      );
+
+      if (category === undefined) {
+        throw new BadRequestException('Something bad happened');
+      }
 
       resourcesList[id] = {
         id,
         name,
         description,
         img: `${defaultUrl}images/${img}`,
-        category,
+        category: category.name,
         isTeleportable: is_teleportable,
         stackSize: stack_size,
         enemiesListIds: [],
       };
     }
+
+    for (const resourceEnemy of allResourcesEnemies) {
+      const { enemy_id, resource_id } = resourceEnemy;
+
+      const item = resourcesList[resource_id];
+
+      if (!item) {
+        throw new BadRequestException(`No item with id ${resource_id}`);
+      }
+
+      item.enemiesListIds.push(enemy_id);
+    }
+
+    const resourcesMap: { [categoryId: string]: string[] } = {};
+
+    for (const { id } of allResourcesCategories) {
+      resourcesMap[id] = [];
+    }
+
+    for (const item of allResources) {
+      resourcesMap[item.category_id].push(item.id);
+    }
+
+    const resourcesGroupsResp: ResourcesGroups[] = allResourcesCategories.map(
+      (category) => ({
+        title: category.name,
+        ids: resourcesMap[category.id],
+      }),
+    );
+
+    return { resourcesList, resourcesGroups: resourcesGroupsResp };
+  }
+
+  async getRecepiesInfo(
+    id: string,
+  ): Promise<{ recipesInfo: RecipesResponce; usedRecipes: Recipes[] }> {
+    const recipesQuery = this.recipesRepository
+      .createQueryBuilder('resipes')
+      .where('resipes.result_id = :id', { id })
+      .orWhere('resipes.create_from_id = :id', { id });
+
+    const allRecipiesById = await recipesQuery.getMany();
+    const recipesResponse: RecipesResponce = {
+      createdFromRecepieIds: [],
+      usedForRecepieIds: [],
+      recipesList: {},
+    };
+
+    for (const recipe of allRecipiesById) {
+      const recipeId = recipe.recipe_id;
+      const { createdFromRecepieIds, usedForRecepieIds } = recipesResponse;
+      if (
+        recipe.result_id === id &&
+        !createdFromRecepieIds.includes(recipeId)
+      ) {
+        createdFromRecepieIds.push(recipeId);
+      }
+      if (
+        recipe.create_from_id === id &&
+        !usedForRecepieIds.includes(recipeId)
+      ) {
+        usedForRecepieIds.push(recipeId);
+      }
+    }
+
+    const recepiesIdsToQuery = clearDuplicates([
+      ...recipesResponse.createdFromRecepieIds,
+      ...recipesResponse.usedForRecepieIds,
+    ]);
+    const queryByRecipeId = this.recipesRepository
+      .createQueryBuilder('recipes')
+      .where('recipes.recipe_id IN (:...ids)', {
+        ids: recepiesIdsToQuery,
+      });
+    const usedRecipes = await queryByRecipeId.getMany();
+    const recipesList = recipesResponse.recipesList;
+
+    for (const recipe of usedRecipes) {
+      const { recipe_id, create_from_id, result_id } = recipe;
+      if (!recipesList[recipe_id]) {
+        recipesList[recipe_id] = {
+          createFromIds: [],
+          resultId: [],
+        };
+      }
+      const { createFromIds, resultId } = recipesList[recipe_id];
+
+      if (!createFromIds.includes(create_from_id)) {
+        createFromIds.push(create_from_id);
+      }
+
+      if (!resultId.includes(result_id)) {
+        resultId.push(result_id);
+      }
+    }
+
+    return { usedRecipes, recipesInfo: recipesResponse };
+  }
+
+  async getResorsesInfo(
+    resourceId: string,
+    usedRecipes: Recipes[],
+  ): Promise<{
+    resourcesList: ResourcesList;
+    allResourcesEnemies: Resources_Enemies[];
+  }> {
+    const uniqueResourcesIds: string[] = [];
+
+    for (const recipe of usedRecipes) {
+      const { create_from_id, result_id } = recipe;
+      if (!uniqueResourcesIds.includes(create_from_id)) {
+        uniqueResourcesIds.push(create_from_id);
+      }
+      if (!uniqueResourcesIds.includes(result_id)) {
+        uniqueResourcesIds.push(result_id);
+      }
+    }
+
+    const resourceQueryByIds = this.resourcesRepository
+      .createQueryBuilder('resources')
+      .where('resources.id IN (:...ids)', {
+        ids: uniqueResourcesIds,
+      });
+
+    const allResourceByIds = await resourceQueryByIds.getMany();
+
+    const resourcesCategories =
+      this.resourcesCategoriesRepository.createQueryBuilder('categories');
+    const allResourcesCategories = await resourcesCategories.getMany();
+
+    const resourcesList: { [id: string]: ResourcesFullInfo } = {};
+
+    for (const item of allResourceByIds) {
+      const {
+        id,
+        name,
+        category_id,
+        is_teleportable,
+        stack_size,
+        description,
+        img,
+      } = item;
+
+      const category = allResourcesCategories.find(
+        (caregorie) => caregorie.id === category_id,
+      );
+
+      if (category === undefined) {
+        throw new BadRequestException('Something bad happened');
+      }
+
+      resourcesList[id] = {
+        id,
+        name,
+        description,
+        img: `${defaultUrl}images/${img}`,
+        category: category.name,
+        isTeleportable: is_teleportable,
+        stackSize: stack_size,
+        enemiesListIds: [],
+      };
+    }
+
+    const resourcesEnemiesQuery = this.resourcesEnemiesRepository
+      .createQueryBuilder('resourceEnemy')
+      .where('resourceEnemy.resource_id = :id', {
+        id: resourceId,
+      });
+
+    const allResourcesEnemies = await resourcesEnemiesQuery.getMany();
 
     for (const resourceEnemy of allResourcesEnemies) {
       const { enemy_id, resource_id } = resourceEnemy;
@@ -82,47 +262,63 @@ export class ItemsService {
       item.enemiesListIds.push(enemy_id);
     }
 
-    const resourcesMap: { [categoryId: string]: string[] } = {};
+    return { resourcesList, allResourcesEnemies };
+  }
 
-    for (const { id } of allResourcesCategories) {
-      resourcesMap[id] = [];
+  async getEnemiesInfo(
+    allResourcesEnemies: Resources_Enemies[],
+  ): Promise<EnemiesList> {
+    const uniqueEnemiesIds: string[] = [];
+
+    for (const enemy of allResourcesEnemies) {
+      const { enemy_id } = enemy;
+
+      if (!uniqueEnemiesIds.includes(enemy_id)) {
+        uniqueEnemiesIds.push(enemy_id);
+      }
     }
-    console.log(resourcesMap, 'f');
-    for (const item of allResources) {
-      resourcesMap[item.category_id].push(item.id);
+
+    const enemiesQuery = this.enemiesRepository.createQueryBuilder('enemies');
+
+    let allEnemies: Enemies[] = [];
+    if (uniqueEnemiesIds.length > 0) {
+      enemiesQuery.where('enemies.id IN (:...ids)', {
+        ids: uniqueEnemiesIds,
+      });
+      allEnemies = await enemiesQuery.getMany();
     }
-    console.log(resourcesMap, 's');
-    const resourcesGroupsResp: ResourcesGroups[] = allResourcesCategories.map(
-      (category) => ({
-        title: category.name,
-        ids: resourcesMap[category.id],
-      }),
+
+    const enemiesList: EnemiesList = {};
+    for (const enemy of allEnemies) {
+      const { id, name } = enemy;
+      enemiesList[id] = {
+        id,
+        name,
+      };
+    }
+    return enemiesList;
+  }
+
+  async getResource(id: string): Promise<ResourceResponce> {
+    const { usedRecipes, recipesInfo } = await this.getRecepiesInfo(id);
+
+    const { resourcesList, allResourcesEnemies } = await this.getResorsesInfo(
+      id,
+      usedRecipes,
     );
 
-    return { resourcesList, resourcesGroups: resourcesGroupsResp };
+    const enemiesList = await this.getEnemiesInfo(allResourcesEnemies);
+
+    const { createdFromRecepieIds, usedForRecepieIds, recipesList } =
+      recipesInfo;
+
+    return {
+      id,
+      createdFromRecepieIds,
+      usedForRecepieIds,
+      recipesList,
+      resourcesList,
+      enemiesList,
+    };
   }
 }
-
-export type ResourcesList = {
-  [id: string]: ResourcesFullInfo;
-};
-
-type Resp = {
-  resourcesList: ResourcesList;
-  resourcesGroups: ResourcesGroups[];
-};
-export type ResourcesFullInfo = {
-  name: string;
-  img: string;
-  id: string;
-  description: string;
-  category: string;
-  isTeleportable: boolean;
-  stackSize: number;
-  enemiesListIds: string[];
-};
-
-type ResourcesGroups = {
-  ids: string[];
-  title: string;
-};

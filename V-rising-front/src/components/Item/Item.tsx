@@ -1,11 +1,10 @@
-import type { ResourceIds } from "@/variables";
 import Image from "next/image";
 import Link from "next/link";
 
 type Props = {
   name: string;
   img: string;
-  id: ResourceIds;
+  id: string;
   isCurrentlySelected: boolean;
 };
 
@@ -16,7 +15,8 @@ export const Item = ({ name, img, isCurrentlySelected, id }: Props) => {
       {isCurrentlySelected ? (
         <div>{name}</div>
       ) : (
-        <Link href={`/items/${id}`}>{name}</Link>
+        //TODO url in variable in many ways
+        <Link href={`/resources/${id}`}>{name}</Link>
       )}
     </>
   );

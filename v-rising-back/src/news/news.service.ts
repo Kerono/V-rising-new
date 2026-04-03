@@ -28,7 +28,6 @@ export class NewsListService {
   ) {}
 
   async getNewsPerPage(page: string = '1'): Promise<NewsResponce> {
-    //TODO check if this needed
     const searchPage = Number(page);
     if (!searchPage) {
       throw new NotFoundException(`page should be number`);

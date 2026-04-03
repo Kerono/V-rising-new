@@ -27,8 +27,8 @@ export const linksData: LinksData[] = [
     href: "/regions",
   },
   {
-    content: "Items",
-    href: "/items",
+    content: "Resources",
+    href: "/resources",
   },
   {
     content: "Abilities",

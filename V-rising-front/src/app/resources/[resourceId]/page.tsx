@@ -1,8 +1,7 @@
 import styles from "./page.module.scss";
-import { ResourceIds } from "@/variables";
 import { Item } from "@/components/Item";
 import { Fragment, ReactNode, FC } from "react";
-import { getSpecificItem } from "@/server/actions";
+import { getResource } from "@/server/actions";
 import { AdditionalInfo } from "@/components/AdditionalInfo";
 import { notFound } from "next/navigation";
 
@@ -12,12 +11,13 @@ export type Info = {
 };
 
 type Props = {
-  params: Promise<{ item: ResourceIds }>;
+  params: Promise<{ resourceId: string }>;
 };
 
 const Page: FC<Props> = async ({ params }) => {
-  const { item } = await params;
-  const data = await getSpecificItem(item);
+  const { resourceId } = await params;
+  console.log(await params);
+  const data = await getResource(resourceId);
   const { id, enemiesList, resourcesList, recipesList } = data;
 
   const resource = resourcesList[id];
@@ -25,20 +25,19 @@ const Page: FC<Props> = async ({ params }) => {
   if (!resource) notFound();
 
   const {
+    id: currentMaterialId,
     name,
     description,
     img,
-    groups,
-    category,
     isTeleportable,
     stackSize,
-    id: currentMaterialId,
+    enemiesListIds,
   } = resource;
 
   const info: Info[] = [
     {
       title: "Category",
-      value: <div>{category}</div>,
+      value: <div>Material</div>,
     },
     {
       title: "Teleportable",
@@ -50,16 +49,18 @@ const Page: FC<Props> = async ({ params }) => {
     },
   ];
 
+  const recipesListIds = Object.keys(recipesList);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
         <div className={styles.title}>{name}</div>
         <div>{description}</div>
-        {groups.enemiesList.length > 0 && (
+        {enemiesListIds.length > 0 && (
           <>
-            <div>Drops from </div>
+            <div>Drops from</div>
             <ul className={styles["enemies-wrapper"]}>
-              {groups.enemiesList.map((enemy) => {
+              {enemiesListIds.map((enemy) => {
                 const { name } = enemiesList[enemy];
                 return <li key={enemy}>{name}</li>;
               })}
@@ -70,7 +71,50 @@ const Page: FC<Props> = async ({ params }) => {
         <div className={styles["table-wrapper"]}>
           <div>Recipe</div>
           <div>Resulting Item</div>
-          {recipesList.map(({ recipe, resultItems }, index) => {
+          {recipesListIds.map((id) => {
+            console.log(id);
+            const createFromIds = recipesList[id].createFromIds;
+            const resultId = recipesList[id].resultId;
+            console.log(createFromIds, "createFromIds", resultId, "resultId");
+            return (
+              <Fragment key={id}>
+                <div className={styles["items-wrapper"]}>
+                  {createFromIds.map((res) => {
+                    const { img, name, id } = resourcesList[res];
+                    const isCurrentlySelected = currentMaterialId === id;
+                    return (
+                      <div key={id} className={styles.items}>
+                        <Item
+                          id={id}
+                          name={name}
+                          img={img}
+                          isCurrentlySelected={isCurrentlySelected}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className={styles["items-wrapper"]}>
+                  {resultId.map((item) => {
+                    const { img, name, id } = resourcesList[item];
+                    const isCurrentlySelected = currentMaterialId === id;
+                    return (
+                      <div key={id} className={styles.items}>
+                        <Item
+                          key={id}
+                          id={id}
+                          name={name}
+                          img={img}
+                          isCurrentlySelected={isCurrentlySelected}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </Fragment>
+            );
+          })}
+          {/* {recipesListKeys.map(({ recipe, resultItems }, index) => {
             return (
               <Fragment key={index}>
                 <div className={styles["items-wrapper"]}>
@@ -106,9 +150,9 @@ const Page: FC<Props> = async ({ params }) => {
                     );
                   })}
                 </div>
-              </Fragment>
-            );
-          })}
+              </Fragment> */}
+          {/* );
+          })} */}
         </div>
       </div>
       <AdditionalInfo title={name} imgSrc={img} info={info} />

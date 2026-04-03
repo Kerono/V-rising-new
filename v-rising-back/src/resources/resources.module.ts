@@ -6,6 +6,8 @@ import {
   Resources,
   Resources_Enemies,
   Resources_Categories,
+  Recipes,
+  Enemies,
 } from './resources.entity';
 
 @Module({
@@ -14,6 +16,8 @@ import {
       Resources,
       Resources_Enemies,
       Resources_Categories,
+      Recipes,
+      Enemies,
     ]),
   ],
   providers: [ItemsService],
