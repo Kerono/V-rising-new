@@ -22,6 +22,38 @@ export const baseUrl = "http://localhost:3000/";
 
 export const newsPerPage = 4;
 
+export const linksData: LinksData[] = [
+  {
+    content: "Home",
+    href: "/",
+  },
+  {
+    content: "Regions",
+    href: "/regions",
+  },
+  {
+    content: "Resources",
+    href: "/resources",
+  },
+  {
+    content: "Abilities",
+    href: "/abilities",
+  },
+  {
+    content: "Weapons",
+    href: "/weapons",
+  },
+  {
+    content: "Blood carriers V",
+    href: "/blood-carriers",
+  },
+];
+
+type LinksData = {
+  href: string;
+  content: string;
+};
+
 type TierWeaponInfo = {
   img: string;
   info: string;
@@ -141,33 +173,13 @@ export type ResourcesList = {
   [id: string]: ResourcesFullDetails;
 };
 
-type ShapeshiftingPowersIds = "wolf-form" | "bear-form" | "rat-form";
-type BloodPowers = "expose-vein" | "blood-mend" | "blood-hunger";
-type StaticSkillsBriefDecriptionIds = "abilitiesInfo" | "weaponsSkills";
+// type ShapeshiftingPowersIds = "wolf-form" | "bear-form" | "rat-form";
+// type BloodPowers = "expose-vein" | "blood-mend" | "blood-hunger";
 
-export type SkillsBriefDescription = {
-  staticInfo: {
-    [key in StaticSkillsBriefDecriptionIds]: {
-      title: "Abilities" | "Weapon Skills";
-      description: string;
-    };
-  };
-  abilities: {
-    "shapeshifting-powers": {
-      title: "Shapeshifting Powers";
-      vampirePowerIds: ShapeshiftingPowersIds[];
-    };
-    "blood-powers": {
-      title: "Blood Powers";
-      vampirePowerIds: BloodPowers[];
-    };
-  };
-};
-
-export type SkillsFullInfoIds = ShapeshiftingPowersIds | BloodPowers;
+// export type SkillsFullInfoIds = ShapeshiftingPowersIds | BloodPowers;
 
 type Skill = {
-  id: SkillsFullInfoIds;
+  id: string;
   title: string;
   img: string;
   description: string;
@@ -181,7 +193,7 @@ type Skill = {
 };
 
 export type SkillsList = {
-  [key in SkillsFullInfoIds]: Skill;
+  [skillId: string]: Skill;
 };
 
 type Bosses = {

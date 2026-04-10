@@ -1,31 +1,28 @@
 import styles from "./page.module.scss";
-import { getSpecificSkill } from "@/server/actions";
-import type { SkillsFullInfoIds } from "@/variables";
-import type { Info } from "@/app/items/[item]/page";
+import { getAbility } from "@/server/actions";
+import type { Info } from "@/app/resources/[resourceId]/page";
 import { AdditionalInfo } from "@/components/AdditionalInfo";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+// import { notFound } from "next/navigation";
 import { FC } from "react";
 
 type Props = {
-  params: Promise<{ ability: SkillsFullInfoIds }>;
+  params: Promise<{ ability: string }>;
 };
 
 const Page: FC<Props> = async ({ params }) => {
   const { ability } = await params;
-  const { searchId, skillsList, bossesList } = await getSpecificSkill(ability);
+  const { title, img, description, type, castTime, notes, getByBossId, boss } =
+    await getAbility(ability);
 
-  const currentSkill = skillsList[searchId];
+  //TODO add error validation on front side
+  // if (!currentSkill) notFound();
 
-  if (!currentSkill) notFound();
-
-  const { title, img, description, notes, unlock, type, castTime } =
-    currentSkill;
-
-  const requirements = unlock && {
-    bossName: bossesList[unlock].title,
-    id: bossesList[unlock].id,
-  };
+  const requirements = getByBossId &&
+    boss && {
+      id: boss.id,
+      bossName: boss.name,
+    };
 
   const info: Info[] = [
     {
@@ -54,11 +51,11 @@ const Page: FC<Props> = async ({ params }) => {
         <div className={styles.title}>{title}</div>
         <div>Overview</div>
         <div>{description}</div>
-        {notes && (
+        {notes.length > 0 && (
           <>
-            <div>{notes.title}</div>
+            <div>Notes</div>
             <ul>
-              {notes.content.map((note, index) => (
+              {notes.map((note, index) => (
                 <li key={index}>{note}</li>
               ))}
             </ul>

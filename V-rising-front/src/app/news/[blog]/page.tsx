@@ -1,5 +1,4 @@
 import { getSpecificNews } from "@/server/actions";
-import { NewsIds } from "@/variables";
 import Image from "next/image";
 import styles from "./page.module.scss";
 import { notFound } from "next/navigation";
@@ -7,13 +6,13 @@ import { FC } from "react";
 
 type Props = {
   params: Promise<{
-    blog: NewsIds;
+    blog: string;
   }>;
 };
 
 const Page: FC<Props> = async ({ params }) => {
   const { blog } = await params;
-  //TODO error in render component ?
+  //TODO add error validation on front side
   try {
     const responce = await getSpecificNews(blog);
     const { title, info, img } = responce;

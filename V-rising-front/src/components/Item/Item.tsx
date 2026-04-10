@@ -15,7 +15,6 @@ export const Item = ({ name, img, isCurrentlySelected, id }: Props) => {
       {isCurrentlySelected ? (
         <div>{name}</div>
       ) : (
-        //TODO url in variable in many ways
         <Link href={`/resources/${id}`}>{name}</Link>
       )}
     </>

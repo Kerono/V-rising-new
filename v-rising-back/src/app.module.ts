@@ -5,6 +5,7 @@ import { News } from './news/news.entity';
 import { Regions } from './regions/regions.entity';
 import { RegionsModule } from './regions/regions.module';
 import { ItemsModule } from './resources/resources.module';
+import { AbilitiesModule } from './abilities/abilities.module';
 
 @Module({
   imports: [
@@ -18,11 +19,10 @@ import { ItemsModule } from './resources/resources.module';
       password: 'nestjscourse',
       database: 'sampledb',
       entities: [News, Regions],
-      // synchronize: true,
       autoLoadEntities: true,
-      // migrations: ['./src/data/migrations/*{.ts,.js}'],
     }),
     ItemsModule,
+    AbilitiesModule,
   ],
 })
 export class AppModule {}

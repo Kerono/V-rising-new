@@ -457,4 +457,176 @@ VALUES
   'rugged-hide-recipe',
   'rugged-hide',
   'leather'
-)
+);
+
+-- TODO доделать при составлении боссов
+CREATE TABLE bosses (
+  id VARCHAR(50) not null unique,
+  name VARCHAR(50) not null
+);
+
+INSERT INTO bosses (id,name) VALUES 
+(
+  'tristan-the-vampire-hunter', 
+  'Tristan the vampire hunter'
+),
+(
+  'alpha-the-white-wolf', 
+  'Alpha the white wolf'
+),
+(
+  'keely-the-frost-archer', 
+  'Keely the frost archer'
+),
+(
+  'kodia-the-ferocious-bear', 
+  'Kodia the ferocious bear'
+),
+(
+  'nibbles-the-putrid-rat', 
+  'Nibbles the putrid rat'
+),
+(
+  'rufus-the-foreman', 
+  'Rufus the foreman'
+),
+(
+  'lidia-the-chaos-archer', 
+  'Lidia the chaos archer'
+),
+(
+  'bane-the-shadowblade', 
+  'Bane the shadowblade'
+);
+
+-- //TODO markdown check if needed
+CREATE TABLE abilities (
+  id VARCHAR(50) unique not null ,
+  title VARCHAR(50) not null,
+  img VARCHAR(50) not null,
+  description TEXT not null,
+  type VARCHAR(50) not null,
+  cast_time VARCHAR(50) not null,
+  subgroup VARCHAR(50)
+);
+
+INSERT INTO abilities (id,title,img,description,type,cast_time,subgroup)
+VALUES 
+(
+  'wolf-form',
+  'Wolf Form',
+  'wolf-form.webp',
+  'Wolf Form is a Shapeshifting Power that allows a vampire to travel faster than running, but slower than riding a Horse. While in Wolf Form, Wolves will not attack you. This include Frost Wolves, the Alpha Wolf and Bandit Wolves, however Cursed Wolves and Mutated Wolves will still attack you on sight.
+  While in Wolf Form, your Dash Spell is replaced by a Spectral Leap ability with 2 charges and a 8 second cooldown. Can be used to leap through most types of solid objects. Your Ultimate Spell is replaced by a Howl, with no combat usage. The Founder`s Pack: Eldest Bloodline & Legacy of Castlevania DLCs each add a variant of this Ability called  Stygian Wolf & Soul of the Wolf respectively, these variations being purely cosmetic.',
+  'Transformation',
+  '~2.5s',
+  'shapeshifting-powers'
+),
+(
+  'bear-form',
+  'Bear form',
+  'bear-form.webp',
+  'Bear Form is a Shapeshifting Power that replaces your weapon skills with 2 new abilities: Smash and Crush. The Bear form`s melee attacks scale with gear level and with a high enough score can be used to break large ore deposits and other world objects that would otherwise require a Minor Explosive Box, this includes the barrier to Quincey the Bandit King`s stronghold and the large stone deposit blocking the Iron Cave. Your Ultimate Spell is replaced by a Roar, with no combat usage.Bear Form also grants resistance to sunlight, garlic, silver, fire and holy. It`s especially useful for more quickly dissipating the garlic debuff stacks.',
+  'Transformation',
+  '~3s',
+  'shapeshifting-powers'
+),
+(
+  'rat-form',
+  'Rat Form',
+  'rat-form.webp',
+  'Rat Form is a Shapeshifting Power that is obtained after defeating Putrid Rat after summoning it from a Vermin Nest, this small and stealthy form allows you to slink through the night (or day) to avoid combat. 
+  Beware however, as some more perceptive V Blood Carriers and enemies in Silverlight will still be able to detect you. It can notably be used to access a secret area in the back of the Silver Mine.',
+  'Transformation',
+  '~2s',
+  'shapeshifting-powers'
+),
+(
+  'blood-hunger',
+  'Blood hunger',
+  'blood-hunger.webp',
+  'Upon activating this buff, your vision turns red, in return allowing you to see the blood types and quality of nearby targets 
+  (containing drainable blood) within your field of vision. When using any other vampire powers, the buff is removed. Best used when searching for high quality blood or specific blood types to charm Servants for the Servant Coffin OR replenishing blood prior to a boss fight in order to secure the more combat useful traits.',
+  'Buff',
+  'Instant',
+  'blood-powers'
+),
+(
+  'expose-vein',
+  'Expose vein',
+  'expose-vein.webp',
+  'Expose Vein is one of the 2 default starting Vampire Powers.
+  Using this skill will put your character in a channeled state for 13s, whereby any movement or action will cancel the cast. While in this state, other friendly vampires are able to drink from your neck, 
+  and in return you share half your current blood pool and type with them. This is useful for when clan members are in dire need to replenish their blood pool and are unable to find any other source of blood.',
+  'Channeled',
+  'Instant',
+  'blood-powers'
+),
+(
+  'blood-mend',
+  'Blood Mend',
+  'blood-mend.webp',
+  'Blood Mend is one of the 2 default starting Vampire Powers. Using this power will put your character in a channeled state, whereby any movement or action will cancel the cast. For every second that Blood Mend is channeled, you will drain 0.1 liters of blood, but recover 5% of your max health. Your character has a 10 liter capacity by default. Before using the power, make sure you have sufficient blood left, or you may suffer the blood loss penalty, slowly losing health down to 1 hp. The amount of health recovered is increased by 15% after unlocking the Blood Passive Improved Blood Mend.While in combat, you`re only able to recover up to 25% Max HP at a time. For example, if you`re at 50% health, you can only heal up to 75% max health until you leave combat. Blood Orbs bypass this limitation.',
+  'Recovery',
+  '1.5s',
+  'blood-powers'
+);
+
+CREATE TABLE abilities_bosses (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  ability_id VARCHAR(50) references abilities(id),
+  boss_id VARCHAR(50) references bosses(id),
+  UNIQUE (ability_id, boss_id)
+);
+
+INSERT INTO abilities_bosses (ability_id,boss_id) VALUES 
+(
+  'wolf-form',
+  'alpha-the-white-wolf'
+),
+(
+  'bear-form',
+  'kodia-the-ferocious-bear'
+),
+(
+  'rat-form',
+  'nibbles-the-putrid-rat'
+),
+(
+  'blood-hunger',
+  'tristan-the-vampire-hunter'
+);
+
+CREATE TABLE abilities_notes (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  ability_id VARCHAR(50) references abilities(id),
+  description TEXT not null 
+);
+
+INSERT INTO abilities_notes (ability_id,description) VALUES
+(
+  'wolf-form',
+  'If any Wolves were already attacking you when you transformed, they will cease attacking you and instead just follow you until you 
+  either revert back to your true form or leave their aggro range.'
+),
+(
+  'wolf-form',
+  'Taking damage, attacking, using abilities, items, or Emotes will bring you out of Wolf Form.'
+),
+(
+  'wolf-form',
+  'While not nearly as stealthy as the Rat Form, the Wolf Form does seem to reduce detection rates by humanoid Enemies. Humans will generally only attack you in Wolf form if you get too close or linger.'
+),
+(
+  'bear-form',
+  'You can still build and access buildings/storage, though. This does not apply to chests in the world outside your castle, 
+  which will cause you to cancel the transformation as soon as you access them.'
+),
+(
+  'rat-form',
+  'Taking damage, attacking, using abilities, items, or Emotes will bring you out of Rat Form.'
+),
+(
+  'rat-form',
+  'You can still build and access buildings/storage, though. This does not apply to chests in the world outside your castle, which will cause you to cancel the transformation as soon as you access them.'
+);

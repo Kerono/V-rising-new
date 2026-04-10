@@ -40,7 +40,6 @@ export type ResourceResponce = RecipesResponce & {
   id: string;
   enemiesList: EnemiesList;
   resourcesList: ResourcesList;
-  // crafting: RecipesResponce;
 };
 
 export type RecipesList = {

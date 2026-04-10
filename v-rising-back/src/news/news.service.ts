@@ -2,23 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { News } from './news.entity';
-import type { NewsIds } from './news.entity';
-
-export const defaultUrl = 'http://localhost:3000/';
-
-const newsPerPage = 4;
-
-type NewsData = {
-  title: string;
-  info: string;
-  id: NewsIds;
-  img: string;
-};
-
-type NewsResponce = {
-  data: NewsData[];
-  totalCount: number;
-};
+import { NewsResponce, NewsData } from './news.types';
+import { newsPerPage, defaultUrl } from 'src/variables';
 
 @Injectable()
 export class NewsListService {
@@ -29,12 +14,14 @@ export class NewsListService {
 
   async getNewsPerPage(page: string = '1'): Promise<NewsResponce> {
     const searchPage = Number(page);
+
     if (!searchPage) {
       throw new NotFoundException(`page should be number`);
     }
-    const query = this.newsRepository.createQueryBuilder('task');
 
-    const allNews = await query.getMany();
+    const newsQuery = this.newsRepository.createQueryBuilder('task');
+
+    const allNews = await newsQuery.getMany();
 
     const newsOnPage = allNews.slice(
       newsPerPage * (searchPage - 1),
@@ -54,19 +41,23 @@ export class NewsListService {
     };
     return resp;
   }
-  async getSpecificNewsInfo(id: NewsIds): Promise<NewsData> {
+  async getSpecificNewsInfo(id: string): Promise<NewsData> {
     const searchElem = await this.newsRepository.findOne({
       where: {
         id,
       },
     });
+
     if (!searchElem) {
       throw new NotFoundException(`no such id ${id}`);
     }
-    const data: NewsData = {
+
+    const { img } = searchElem;
+    const responce: NewsData = {
       ...searchElem,
-      img: `${defaultUrl}/images/${id}.webp`,
+      img: `${defaultUrl}images/${img}`,
     };
-    return data;
+
+    return responce;
   }
 }

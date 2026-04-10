@@ -7,42 +7,11 @@ import { darkThemeStyles, lightThemeStyles } from "@/variables";
 import { HeaderLink } from "../HeaderLink";
 import Link from "next/link";
 import { MobileHeader } from "../MobileHeader";
+import { linksData } from "@/variables";
 
 type Props = {
   initialTheme: string;
 };
-
-export type LinksData = {
-  href: string;
-  content: string;
-};
-
-export const linksData: LinksData[] = [
-  {
-    content: "Home",
-    href: "/",
-  },
-  {
-    content: "Regions",
-    href: "/regions",
-  },
-  {
-    content: "Resources",
-    href: "/resources",
-  },
-  {
-    content: "Abilities",
-    href: "/abilities",
-  },
-  {
-    content: "Weapons",
-    href: "/weapons",
-  },
-  {
-    content: "Blood carriers V",
-    href: "/blood-carriers",
-  },
-];
 
 export const Header: FC<Props> = ({ initialTheme }: Props) => {
   const [theme, setTheme] = React.useState<string>(initialTheme);

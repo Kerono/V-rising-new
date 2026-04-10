@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -8,7 +8,7 @@ import {
   Recipes,
   Enemies,
 } from './resources.entity';
-import { defaultUrl } from 'src/news/news.service';
+import { defaultUrl } from 'src/variables';
 import type {
   AllResourcesResp,
   ResourcesFullInfo,
@@ -34,6 +34,7 @@ export class ItemsService {
     @InjectRepository(Enemies)
     private enemiesRepository: Repository<Enemies>,
   ) {}
+
   async getResources(): Promise<AllResourcesResp> {
     const resources = this.resourcesRepository.createQueryBuilder('resource');
     const resourcesCategories =

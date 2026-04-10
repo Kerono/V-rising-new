@@ -8,10 +8,8 @@ import type {
   ResourcesGroups,
   ResourcesList,
   EnemiesList,
-  SkillsBriefDescription,
   SkillsList,
   TypesOfWeaponIds,
-  SkillsFullInfoIds,
   BossesList,
   BossesIds,
   ResourcesInfo,
@@ -31,10 +29,6 @@ export async function getNews(page: number): Promise<GetNews> {
 
 export async function getSpecificNews(endpoint: string): Promise<NewsList> {
   const response = await fetch(`${baseUrl}news/${endpoint}`);
-  if (!response.ok) {
-    throw response.json();
-  }
-
   const data = await response.json();
   return data;
 }
@@ -50,7 +44,6 @@ type AllResources = {
   resourcesList: ResourcesInfo;
 };
 
-//TODO rename
 export async function getResources(): Promise<AllResources> {
   const response = await fetch(`${baseUrl}resources`);
   const data: AllResources = await response.json();
@@ -74,31 +67,62 @@ export async function getResource(endpoint: string): Promise<ResourceResponce> {
   return data;
 }
 
-type SkillsData = {
-  skillsBriefDescription: SkillsBriefDescription;
-  skillsList: SkillsList;
+type AbilitiesInfo = {
+  [ability: string]: {
+    id: string;
+    title: string;
+    img: string;
+    notes: string[];
+    description: string;
+    getByBossId?: string;
+    type: string;
+    castTime: string;
+    subgroup: string;
+  };
 };
 
-export async function getAllSkills(): Promise<SkillsData> {
-  const response = await fetch(`${baseUrl}/skills-list`);
-  const data: SkillsData = await response.json();
-  const { skillsBriefDescription, skillsList } = data;
-  return { skillsBriefDescription, skillsList };
+type AbilitiesSubgroups = {
+  shapeshiftingPowersIds: string[];
+  bloodPowersIds: string[];
+};
+
+type Abilities = {
+  abilitiesInfo: AbilitiesInfo;
+  abilitiesSubgroups: AbilitiesSubgroups;
+};
+
+export async function getAbilities(): Promise<Abilities> {
+  const response = await fetch(`${baseUrl}abilities`);
+  const skills: Abilities = await response.json();
+  return skills;
 }
 
-type SpecificSkill = {
-  skillsList: SkillsList;
-  searchId: SkillsFullInfoIds;
-  bossesList: BossesList;
+type Boss = {
+  id: string;
+  name: string;
 };
 
-export async function getSpecificSkill(
-  endpoint: SkillsFullInfoIds,
-): Promise<SpecificSkill> {
-  const response = await fetch(`${baseUrl}/skills-list/${endpoint}`);
-  const data: SpecificSkill = await response.json();
-  const { skillsList, searchId, bossesList } = data;
-  return { skillsList, searchId, bossesList };
+export type Ability = {
+  id: string;
+  title: string;
+  img: string;
+  notes: string[];
+  description: string;
+  getByBossId?: string;
+  type: string;
+  castTime: string;
+  subgroup: string;
+};
+
+export type AbilityResponce = Ability & {
+  boss?: Boss;
+};
+
+export async function getAbility(endpoint: string): Promise<AbilityResponce> {
+  console.log(endpoint);
+  const response = await fetch(`${baseUrl}abilities/${endpoint}`);
+  const data: Ability = await response.json();
+  return data;
 }
 
 type AllWeapons = {

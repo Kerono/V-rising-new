@@ -22,6 +22,7 @@ const Page: FC<Props> = async ({ params }) => {
 
   const resource = resourcesList[id];
 
+  //TODO add error validation on front side
   if (!resource) notFound();
 
   const {

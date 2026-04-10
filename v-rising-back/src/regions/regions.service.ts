@@ -2,18 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Regions } from './regions.entity';
 import { Repository } from 'typeorm';
-import { defaultUrl } from 'src/news/news.service';
-
-type RegionsData = {
-  id: string;
-  title: string;
-  content: string;
-};
-
-type Response = {
-  data: RegionsData[];
-  img: string;
-};
+import { defaultUrl } from 'src/variables';
+import type { RegionsData, Response } from './regions.types';
 
 @Injectable()
 export class RegionsService {
