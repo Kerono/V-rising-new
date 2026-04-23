@@ -11,11 +11,13 @@ async function delay() {
 @Controller('news')
 export class NewsController {
   constructor(private newsListService: NewsListService) {}
+
   @Get()
   async getNewsPerPage(@Query('page') page: string) {
     await delay();
     return this.newsListService.getNewsPerPage(page);
   }
+
   @Get(':id')
   async getSpecificNewsInfo(@Param('id') id: string) {
     await delay();

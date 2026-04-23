@@ -1,4 +1,6 @@
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
+
+export const inDevelopment = process.env.NODE_ENV === "development";
 
 type CssVariables = {
   "--text-color": string;
@@ -49,72 +51,14 @@ export const linksData: LinksData[] = [
   },
 ];
 
-type LinksData = {
+export type LinksData = {
   href: string;
   content: string;
 };
 
-type TierWeaponInfo = {
-  img: string;
-  info: string;
-};
-
-type WeaponSkill = TierWeaponInfo;
-
-type WeaponSkillsIds =
-  | "whirlwind"
-  | "shockwave"
-  | "primary"
-  | "frenzy"
-  | "x-strike"
-  | "crushing-blow"
-  | "smack"
-  | "a-thousand-spears"
-  | "harpoon"
-  | "tendon-swing"
-  | "howling-reaper"
-  | "great-cleaver"
-  | "death-from-above"
-  | "rain-of-bolts"
-  | "snapshot"
-  | "multishot"
-  | "guided-arrow"
-  | "throw-dagger"
-  | "rain-of-daggers"
-  | "release-daggers";
-
-type Skills = {
-  id: WeaponSkillsIds;
-  skill: WeaponSkill;
-  description: string;
-  cooldown?: string;
-  tierRequirement: TierWeaponInfo;
-};
-
-type WeaponsListContent = {
-  id: TypesOfWeaponIds;
+export type Info = {
   title: string;
-  type: "melee" | "range";
-  img: string;
-  needReceiving: boolean;
-  additionalCondition?: BossesIds;
-  bossId?: BossesIds;
-  bonuses: string;
-  skills: Skills[];
-};
-
-export type TypesOfWeaponIds =
-  | "sword"
-  | "axes"
-  | "mace"
-  | "spear"
-  | "greatsword"
-  | "crossbow"
-  | "longbow"
-  | "dagger";
-
-export type WeaponsList = {
-  [key in TypesOfWeaponIds]: WeaponsListContent;
+  value: ReactNode;
 };
 
 export type NewsList = {
@@ -122,6 +66,11 @@ export type NewsList = {
   title: string;
   info: string;
   img: string;
+};
+
+export type GetNews = {
+  data: NewsList[];
+  totalCount: number;
 };
 
 export type Regions = {
@@ -136,6 +85,44 @@ export type Regions = {
 export type ResourcesGroups = {
   title: string;
   ids: string[];
+};
+
+export type AllResources = {
+  resourcesGroups: ResourcesGroups[];
+  resourcesList: ResourcesInfo;
+};
+
+export type ResourceResponce = {
+  id: string;
+  enemiesList: EnemiesList;
+  resourcesList: ResourcesList;
+  createdFromRecepieIds: string[];
+  usedForRecepieIds: string[];
+  recipesList: RecipesList;
+};
+
+type AbilitiesInfo = {
+  [ability: string]: {
+    id: string;
+    title: string;
+    img: string;
+    notes: string[];
+    description: string;
+    getByBossId?: string;
+    type: string;
+    castTime: string;
+    subgroup: string;
+  };
+};
+
+type AbilitiesSubgroups = {
+  shapeshiftingPowersIds: string[];
+  bloodPowersIds: string[];
+};
+
+export type Abilities = {
+  abilitiesInfo: AbilitiesInfo;
+  abilitiesSubgroups: AbilitiesSubgroups;
 };
 
 type Enemy = {
@@ -173,61 +160,59 @@ export type ResourcesList = {
   [id: string]: ResourcesFullDetails;
 };
 
-// type ShapeshiftingPowersIds = "wolf-form" | "bear-form" | "rat-form";
-// type BloodPowers = "expose-vein" | "blood-mend" | "blood-hunger";
+export type WeaponSkills = {
+  id: string;
+  skill: WeaponSkill;
+  description: string;
+  tierRequirementWeapon: TierWeaponInfo;
+};
 
-// export type SkillsFullInfoIds = ShapeshiftingPowersIds | BloodPowers;
+type WeaponSkill = {
+  img: string;
+  name: string;
+};
 
-type Skill = {
+type TierWeaponInfo = WeaponSkill;
+
+export type Boss = {
+  id: string;
+  name: string;
+};
+
+type Ability = {
   id: string;
   title: string;
   img: string;
+  notes: string[];
   description: string;
-  unlock?: BossesIds;
+  getByBossId?: string;
   type: string;
   castTime: string;
-  notes?: {
-    title: string;
-    content: string[];
-  };
+  subgroup: string;
 };
 
-export type SkillsList = {
-  [skillId: string]: Skill;
+export type AbilityResponce = Ability & {
+  boss?: Boss;
 };
 
-type Bosses = {
-  id: BossesIds;
-  title: string;
+type WeaponContent = {
+  id: string;
+  name: string;
   img: string;
-  description: string;
-  location: string;
-  level: number;
-  rewards: {
-    skills?: SkillsFullInfoIds[];
-    drop: string[];
-    recipes?: TypesOfWeaponIds[];
+  boss?: {
+    id: string;
+    name: string;
   };
-  attacks: string[];
-  region: string;
 };
 
-export type BossesIds =
-  | "tristan-the-vampire-hunter"
-  | "alpha-the-white-wolf"
-  | "keely-the-frost-archer"
-  | "kodia-the-ferocious-bear"
-  | "nibbles-the-putrid-rat"
-  | "rufus-the-foreman"
-  | "lidia-the-chaos-archer"
-  | "bane-the-shadowblade";
+export type Weapons = {
+  [key: string]: WeaponContent;
+};
 
-export type BriefDescriptionBosses = {
-  title: "V Blood Carriers";
+export type Weapon = {
+  id: string;
+  name: string;
+  boss?: Boss;
   description: string;
-  bosesIds: BossesIds[];
-};
-
-export type BossesList = {
-  [key in BossesIds]: Bosses;
+  skills: WeaponSkills[];
 };

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Image from "next/image";
-import type { Info } from "@/app/resources/[resourceId]/page";
-import styles from "./additionalInfo.module.scss";
+import type { Info } from "@/variables";
+import styles from "./additionalInfoCard.module.scss";
 
 type Props = {
   title: string;
@@ -10,11 +10,16 @@ type Props = {
   info: Info[];
 };
 
-const AdditionalInfo: FC<Props> = ({ title, imgSrc, description, info }) => {
+const AdditionalInfoCard: FC<Props> = ({
+  title,
+  imgSrc,
+  description,
+  info,
+}) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>{title}</div>
-      <Image width={120} height={120} src={imgSrc} alt={title} />
+      <Image priority width={120} height={120} src={imgSrc} alt={title} />
       {description && <div>{description}</div>}
       <div className={styles["info-wrapper"]}>
         {info.map(({ title, value }) => (
@@ -28,4 +33,4 @@ const AdditionalInfo: FC<Props> = ({ title, imgSrc, description, info }) => {
   );
 };
 
-export { AdditionalInfo };
+export { AdditionalInfoCard };

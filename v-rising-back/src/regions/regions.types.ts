@@ -1,4 +1,4 @@
-export type RegionsData = {
+type RegionsData = {
   id: string;
   title: string;
   content: string;

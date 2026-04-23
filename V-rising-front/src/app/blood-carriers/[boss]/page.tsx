@@ -4,7 +4,7 @@ import styles from "./page.module.scss";
 import { FC } from "react";
 import Link from "next/link";
 import { getSpecificBoss } from "@/server/actions";
-import { AdditionalInfo } from "@/components/AdditionalInfo";
+import { AdditionalInfoCard } from "@/components/AdditionalInfoCard";
 import type { Info } from "@/app/items/[item]/page";
 import { notFound } from "next/navigation";
 
@@ -123,7 +123,7 @@ const Page: FC<Props> = async ({ params }) => {
         </div>
       </div>
 
-      <AdditionalInfo title={title} imgSrc={img} info={info} />
+      <AdditionalInfoCard title={title} imgSrc={img} info={info} />
     </div>
   );
 };

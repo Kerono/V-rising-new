@@ -5,40 +5,4 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-
-  .skills-table {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    justify-content: center;
-    border: solid gray;
-    gap: 1px;
-    background-color: gray;
-    color: var(--text-color);
-    > * {
-      background-color: var(--background);
-      padding: 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .column {
-      .title {
-        text-align: center;
-        font-weight: bold;
-        padding: 4px 0;
-        border-bottom: solid gray;
-      }
-
-      .description {
-        padding: 6px;
-      }
-    }
-  }
-
-  .table-title {
-    text-align: center;
-  }
 }

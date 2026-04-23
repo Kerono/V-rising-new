@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Regions } from './regions.entity';
 import { Repository } from 'typeorm';
 import { defaultUrl } from 'src/variables';
-import type { RegionsData, Response } from './regions.types';
+import type { Response } from './regions.types';
 
 @Injectable()
 export class RegionsService {
@@ -12,9 +12,9 @@ export class RegionsService {
     private regionsRepo: Repository<Regions>,
   ) {}
   async getAll(): Promise<Response> {
-    const query = this.regionsRepo.createQueryBuilder('task');
+    const query = this.regionsRepo.createQueryBuilder('regions');
 
-    const regions: RegionsData[] = await query.getMany();
+    const regions = await query.getMany();
 
     return {
       data: [...regions],

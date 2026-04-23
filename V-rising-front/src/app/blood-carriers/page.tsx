@@ -4,6 +4,7 @@ import { getBriefDescriptionBosses } from "@/server/actions";
 import { Fragment } from "react";
 
 const Page = async () => {
+  //TODO
   const { bossesList, briefDecriptionBosses } =
     await getBriefDescriptionBosses();
   const { description, title, bosesIds } = briefDecriptionBosses;

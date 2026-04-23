@@ -6,12 +6,12 @@ export class ItemsController {
   constructor(private resourceService: ItemsService) {}
 
   @Get()
-  getAllResources() {
+  getResources() {
     return this.resourceService.getResources();
   }
 
   @Get(':id')
-  getSpecificResource(@Param('id') id: string) {
+  getResource(@Param('id') id: string) {
     return this.resourceService.getResource(id);
   }
 }

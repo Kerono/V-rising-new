@@ -41,6 +41,7 @@ export class NewsListService {
     };
     return resp;
   }
+
   async getSpecificNewsInfo(id: string): Promise<NewsData> {
     const searchElem = await this.newsRepository.findOne({
       where: {

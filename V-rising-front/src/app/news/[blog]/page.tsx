@@ -12,10 +12,11 @@ type Props = {
 
 const Page: FC<Props> = async ({ params }) => {
   const { blog } = await params;
-  //TODO add error validation on front side
+
   try {
-    const responce = await getSpecificNews(blog);
-    const { title, info, img } = responce;
+    const data = await getSpecificNews(blog);
+    const { title, info, img } = data;
+
     return (
       <div className={styles.wrapper}>
         <div className={styles["image-wrapper"]}>
@@ -26,9 +27,8 @@ const Page: FC<Props> = async ({ params }) => {
       </div>
     );
   } catch (e: unknown) {
-    const errorMessage = (await e) as { message: string };
-    console.log(errorMessage.message);
-    notFound();
+    console.error(e);
+    return notFound();
   }
 };
 

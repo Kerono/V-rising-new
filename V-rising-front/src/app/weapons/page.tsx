@@ -1,16 +1,13 @@
 import styles from "./page.module.scss";
 import Image from "next/image";
 import Link from "next/link";
-import type { TypesOfWeaponIds } from "@/variables";
-import { getAllWeapons } from "@/server/actions";
+import { getWeapons } from "@/server/actions";
 
 const Page = async () => {
-  const { weaponsList, bossesList } = await getAllWeapons();
-  const weaponsKeys = Object.keys(weaponsList);
+  const weapons = await getWeapons();
+  const weaponsKeys = Object.keys(weapons);
 
-  const additionalConditions = weaponsKeys.filter(
-    (d) => weaponsList[d as TypesOfWeaponIds].additionalCondition
-  );
+  const additionalConditions = weaponsKeys.filter((d) => weapons[d].boss);
 
   return (
     <div className={styles.wrapper}>
@@ -18,11 +15,11 @@ const Page = async () => {
       <div>Weapons</div>
       <div className={styles["cards-container"]}>
         {weaponsKeys.map((key) => {
-          const { title, img, id } = weaponsList[key as TypesOfWeaponIds];
+          const { name, img, id } = weapons[key];
           return (
-            <Link className={styles.card} href={`/weapons/${id}`} key={title}>
-              <div>{title}</div>
-              <Image width={20} height={20} src={img} alt={title} />
+            <Link className={styles.card} href={`/weapons/${id}`} key={id}>
+              <div>{name}</div>
+              <Image width={30} height={30} src={img} alt={name} />
             </Link>
           );
         })}
@@ -30,21 +27,18 @@ const Page = async () => {
       <div className={styles["conditions-wrapper"]}>
         <div className={styles.title}>Additional conditions for receiving</div>
         {additionalConditions.map((key) => {
-          const { title, additionalCondition, id } =
-            weaponsList[key as TypesOfWeaponIds];
+          const { name, boss, id } = weapons[key];
 
-          const currentBoss = additionalCondition && {
-            id: bossesList[additionalCondition].id,
-            title: bossesList[additionalCondition].title,
-          };
+          if (!boss) return;
+
+          const { id: bossId, name: bossName } = boss;
+
           return (
             <div key={id} className={styles["weapon-description"]}>
-              {currentBoss?.id && (
+              {boss && (
                 <div>
-                  {title} recipe unlocks after feeding on{" "}
-                  <Link href={`/blood-carriers/${currentBoss.id}`}>
-                    {currentBoss.title}
-                  </Link>
+                  {name} recipe unlocks after feeding on{" "}
+                  <Link href={`/blood-carriers/${bossId}`}>{bossName}</Link>
                 </div>
               )}
             </div>

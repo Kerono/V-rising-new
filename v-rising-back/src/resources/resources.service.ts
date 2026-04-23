@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -122,6 +126,7 @@ export class ItemsService {
       .orWhere('resipes.create_from_id = :id', { id });
 
     const allRecipiesById = await recipesQuery.getMany();
+
     const recipesResponse: RecipesResponce = {
       createdFromRecepieIds: [],
       usedForRecepieIds: [],
@@ -149,6 +154,11 @@ export class ItemsService {
       ...recipesResponse.createdFromRecepieIds,
       ...recipesResponse.usedForRecepieIds,
     ]);
+
+    if (recepiesIdsToQuery.length == 0) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
     const queryByRecipeId = this.recipesRepository
       .createQueryBuilder('recipes')
       .where('recipes.recipe_id IN (:...ids)', {

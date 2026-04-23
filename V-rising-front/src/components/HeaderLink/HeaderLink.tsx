@@ -1,13 +1,11 @@
 import Link from "next/link";
-import type { LinksData } from "../Header";
+import type { LinksData } from "@/variables";
 import { FC } from "react";
 import styles from "./headerLink.module.scss";
 
-type Props = LinksData & {
-  key: number;
-};
+type Props = LinksData;
 
-export const HeaderLink: FC<Props> = ({ href, content }) => {
+const HeaderLink: FC<Props> = ({ href, content }) => {
   return (
     <div className={styles["links-wrapper"]}>
       <Link className={styles.link} href={href}>
@@ -19,3 +17,5 @@ export const HeaderLink: FC<Props> = ({ href, content }) => {
     </div>
   );
 };
+
+export { HeaderLink };

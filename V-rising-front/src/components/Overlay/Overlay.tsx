@@ -1,25 +1,25 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import Link from "next/link";
 import styles from "./overlay.module.scss";
-import { linksData } from "@/components/Header";
+import { linksData } from "@/variables";
 import { X } from "react-feather";
 
 type Props = {
-  setIsOverlayOpen: Dispatch<SetStateAction<boolean>>;
+  setOverlay: (d: boolean) => void;
 };
 
-const Overlay: FC<Props> = ({ setIsOverlayOpen }) => {
+const Overlay: FC<Props> = ({ setOverlay }) => {
   return (
     <div className={styles.overlay}>
       <div className={styles.content}>
         {linksData.map(({ href, content }, index) => (
-          <button key={index} onClick={() => setIsOverlayOpen(false)}>
+          <button key={index} onClick={() => setOverlay(false)}>
             <Link href={href}>{content}</Link>
           </button>
         ))}
         <button
           className={styles["exit-button"]}
-          onClick={() => setIsOverlayOpen(false)}
+          onClick={() => setOverlay(false)}
         >
           <X />
         </button>

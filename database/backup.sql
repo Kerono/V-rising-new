@@ -630,3 +630,335 @@ INSERT INTO abilities_notes (ability_id,description) VALUES
   'rat-form',
   'You can still build and access buildings/storage, though. This does not apply to chests in the world outside your castle, which will cause you to cancel the transformation as soon as you access them.'
 );
+
+CREATE TABLE weapons (
+  id VARCHAR(50) unique not null,
+  name VARCHAR(50) not null,
+  type VARCHAR(50) not null,
+  img VARCHAR(50) not null,
+  description TEXT not null 
+);
+
+INSERT INTO weapons (id,name,type,img,description) 
+VALUES 
+(
+  'sword',
+  'Sword',
+  'melee',
+  'sword.webp',
+  'An all-round Weapon that deals slash damage.Has a +25% physical damage bonus to vegetation and thickets.'
+),
+(
+  'axes',
+  'Axes',
+  'melee',
+  'axes.webp',
+  'Dual-wield axes that deal chop damage. Has a +25% physical damage bonus to wood.'
+),
+(
+  'mace',
+  'Mace',
+  'melee',
+  'mace.webp',
+  'A heavy Weapon that deals blunt damage. Has a +25% physical damage bonus to Minerals.'
+),
+(
+  'spear',
+  'Spear',
+  'melee',
+  'spear.webp',
+  'Perform a Combo of melee attacks dealing 40% / 40% / 50% 
+  physical damage.'
+),
+(
+  'greatsword',
+  'Greatsword',
+  'melee',
+  'greatsword.webp',
+  'A great heavy sword that deals physical damage. Has a greater effect on wood. +25% Physical Damage to Wood'
+),
+(
+  'crossbow',
+  'Crossbow',
+  'range',
+  'crossbow.webp',
+  'A ranged Weapon that fires bolts.'
+),
+(
+  'longbow',
+  'Longbow',
+  'range',
+  'longbow.webp',
+  'A ranged Weapon that fires arrows.'
+),
+(
+  'dagger',
+  'Dagger',
+  'range',
+  'dagger.webp',
+  'A throwing weapon that deals physical damage.'
+);
+
+CREATE TABLE weapons_skills (
+  id VARCHAR(50) unique not null,
+  weapon_id VARCHAR(50) references weapons(id) not null,
+  skill_img VARCHAR(50) not null,
+  skill_name VARCHAR(50) not null,
+  description TEXT not null,
+  tier_requirements_weapon_name VARCHAR(50) not null,
+  tier_requirements_weapon_img VARCHAR(50) not null
+);
+
+INSERT INTO weapons_skills 
+(
+  weapon_id,
+  id,
+  skill_img,
+  skill_name,
+  description,
+  tier_requirements_weapon_img,
+  tier_requirements_weapon_name
+) VALUES 
+(
+  'sword',
+  'sword-primary',
+  'sword-primary.webp',
+  'Primary',
+  'Perform a combo of melee attacks dealing 35% / 35% / 40% physical damage.',
+  'bone-sword.webp',
+  'Bone Sword'
+),
+(
+  'sword',
+  'whirlwind',
+  'sword-whirlwind.webp',
+  'Whirlwind',
+  'Spin around and slice nearby enemies dealing 175% physical damage over 1.1s.Notes: movement speed is increased during the spin.',
+  'copper-sword.webp',
+  'Copper Sword'
+),
+(
+  'sword',
+  'shockwave',
+  'sword-shockwave.webp',
+  'Shockwave',
+  'Send forth a shockwave dealing 100% physical damage and launching the enemy hit into the air for 1.6s. Recast the ability to teleport to the target striking it three times, each strike dealing 20% physical damage.',
+  'iron-sword.webp',
+  'Iron Sword'
+),
+(
+  'axes',
+  'axes-primary',
+  'axes-primary.webp',
+  'Primary',
+  'Perform a combo of melee attacks dealing 45% / 45% / 55% physical damage.',
+  'bone-axes.webp',
+  'Bone Axes'
+),
+(
+  'axes',
+  'frenzy',
+  'axes-frenzy.webp',
+  'Frenzy',
+  'Dash forward and strike the first enemy dealing 100% physical damage. Enter a state of frenzy that increases your movement speed by 25% and increases attack speed by 50% for 1s on a successful hit.',
+  'copper-axes.webp',
+  'Copper Axes'
+),
+(
+  'axes',
+  'x-strike',
+  'axes-x-strike.webp',
+  'X-strike',
+  'Throw two axes in the shape of an X. Each hit deals 80% physical damage and slows the enemy for 1.5s. Hitting the enemy where both axes intersect inflicts a 1s incapacitate.',
+  'iron-axes.webp',
+  'Iron Axes'
+),
+(
+  'mace',
+  'mace-primary',
+  'mace-primary.webp',
+  'Primary',
+  'Perform a Combo of melee attacks dealing 50% / 50% / 60% physical damage.',
+  'bone-mace.webp',
+  'Bone Mace'
+), 
+(
+  'mace',
+  'crushing-blow',
+  'mace-crushing-blow.webp',
+  'Crushing blow',
+  'Vault towards the cursor and slam your mace into the ground dealing 150% physical damage and inflicting a 2s fading snare.',
+  'copper-mace.webp',
+  'Copper Mace'
+),
+(
+  'mace',
+  'smack',
+  'mace-smack.webp',
+  'Smack',
+  'Smack enemies in front of you dealing 70% physical damage, knocking them back and incapacitating them for 1s.',
+  'iron-mace.webp',
+  'Iron Mace'
+),
+(
+  'spear',
+  'spear-primary',
+  'spear-primary.webp',
+  'Primary',
+  'Perform a Combo of melee attacks dealing 40% / 40% / 50% physical damage.',
+  'bone-spear.webp',
+  'Bone Spear'
+),
+(
+  'spear',
+  'a-thousand-spears',
+  'spear-thousand.webp',
+  'Thousand spears',
+  'Perform a multi-stab attack, dealing 140% physical damage and interrupting enemy actions over 1.15s. (8 stabs total)Recast during the effect to perform a thrust attack dealing 50% physical damage and knocking enemies back.',
+  'copper-spear.webp',
+  'Copper Spear'
+),
+(
+  'spear',
+  'harpoon',
+  'spear-harpoon.webp',
+  'Harpoon',
+  'Throw a spear that deals 110% physical damage, pulls the enemy towards you and inflict a 1.5s fading snare.',
+  'iron-spear.webp',
+  'Iron Spear'
+),
+(
+  'greatsword',
+  'greatsword-primary',
+  'greatsword-primary.webp',
+  'Primary',
+  'Perform a Combo of melee attacks dealing 70% / 70% / 80% physical damage.',
+  'iron-greatsword.webp',
+  'Iron Greatsword'
+),
+(
+  'greatsword',
+  'great-cleaver',
+  'greatsword-cleaver.webp',
+  'Great cleaver',
+  'Charge forward and swing your greatsword upward dealing 125% physical damage in an area and launching enemies into the air for 0.65s.',
+  'iron-greatsword.webp',
+  'Iron Greatsword'
+),
+(
+  'greatsword',
+  'death-from-above',
+  'greatsword-death.webp',
+  'Death from Above',
+  'Leap into the air and descend upon your enemy dealing 125% physical damage in an area. Note: Turns immaterial during leap',
+  'iron-greatsword.webp',
+  'Iron Greatsword'
+),
+(
+  'crossbow',
+  'crossbow-primary',
+  'crossbow-primary.webp',
+  'Primary',
+  'Fire a projectile that deals 100% physical damage on hit. Consumes Marked dealing 25% bonus damage and increasing your attack speed by 7% for 10s, this effect stacks up to 3 times.',
+  'crossbow-bone.webp',
+  'Bone Crossbow'
+),
+(
+  'crossbow',
+  'rain-of-bolts',
+  'crossbow-rain.webp',
+  'Rain of Bolts',
+  'Fire a salvo of 5 bolts into the air that rains down on your enemies dealing 40% physical damage each in an area, inflicts Marked and inflicts a 1.5s fading snare.',
+  'crossbow-copper.webp',
+  'Copper Crossbow'
+),
+(
+  'crossbow',
+  'snapshot',
+  'crossbow-snapshot.webp',
+  'Snapshot',
+  'Fire a quick bolt that deals 75% physical damage, interrupts attacks, inflicts Marked and inflicts a 1.5s fading snare. The bolt splits into two upon hit.',
+  'crossbow-iron.webp',
+  'Iron Crossbow'
+),
+(
+  'longbow',
+  'longbow-primary',
+  'longbow-primary.webp',
+  'Primary',
+  'Hold to charge a projectile that deals 60% - 120% physical damage on hit and grants Focus. Focus stacks up to 3 times and increases the effectiveness of your other Longbow skills. Fully charged shots pierces up to 2 enemies, subsequent hits deal 50% damage of the previous hit.',
+  'longbow-copper.webp',
+  'Copper Longbow'
+),
+(
+  'longbow',
+  'multishot',
+  'longbow-multishot.webp',
+  'Multishot',
+  'Fire 5 piercing arrows in a cone dealing 100% physical damage and knocking enemies back. Consumes Focus launching one additional arrow per stack, each dealing 20% bonus damage.',
+  'longbow-copper.webp',
+  'Copper Longbow'
+),
+(
+  'longbow',
+  'guided-arrow',
+  'longbow-guidedarrow.webp',
+  'Guided arrow',
+  'Fire an arrow dealing 120% physical damage and inflicting a 2s fading snare. 
+  The arrow turns to hit the same target again after impact dealing 50% damage.
+  Consumes Focus increasing the number of times the arrow turns by one per stack.',
+  'longbow-iron.webp',
+  'Iron Longbow'
+),
+(
+  'dagger',
+  'throw-dagger',
+  'throw-dagger.webp',
+  'Throw dagger',
+  'Throw up to 4 daggers, each dealing 40% physical damage. Hitting an enemy or a solid object causes the dagger to stick to the ground. Gain one dagger stack every 1.1s.',
+  'iron-daggers.webp',
+  'Iron Daggers'
+),
+(
+  'dagger',
+  'rain-of-daggers',
+  'rain-of-daggers.webp',
+  'Rain of daggers',
+  'Leap into the air and throw 4 daggers in front of you, each dagger dealing 40% physical damage and inflicting a 2s fading snare. Daggers remain on the ground for 8s.',
+  'iron-daggers.webp',
+  'Iron Daggers'
+),
+(
+  'dagger',
+  'release-daggers',
+  'release-daggers.webp',
+  'Release daggers',
+  'Inflict a 1.5s fading snare and release all nearby daggers that are stuck in the ground. Released daggers return to you, piercing enemies and dealing 40% physical damage. Each dagger that returns grant one dagger stack and reduces the cooldown of Rain of Daggers by 0.2s.',
+  'iron-daggers.webp',
+  'Iron Daggers'
+);
+
+CREATE TABLE weapons_bosses (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  weapon_id VARCHAR(50) references weapons(id) not null,
+  boss_id VARCHAR(50) references bosses(id) not null,
+  UNIQUE (weapon_id, boss_id)
+);
+
+INSERT INTO weapons_bosses (weapon_id,boss_id) VALUES 
+(
+  'greatsword',
+  'tristan-the-vampire-hunter'
+),
+(
+  'crossbow',
+  'rufus-the-foreman'
+),
+(
+  'longbow',
+  'lidia-the-chaos-archer'
+),
+(
+  'dagger',
+  'bane-the-shadowblade'
+);

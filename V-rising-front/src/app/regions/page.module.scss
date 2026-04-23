@@ -5,30 +5,4 @@
   display: flex;
   gap: 8px;
   align-items: flex-start;
-
-  .title {
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .content {
-    flex: 1;
-  }
-
-  .regions-description {
-    margin: 8px 0;
-  }
-
-  .image-wrapper {
-    position: sticky;
-    top: 20%;
-    flex: 1;
-    min-width: 200px;
-
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
-    }
-  }
 }
