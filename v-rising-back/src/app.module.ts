@@ -5,6 +5,7 @@ import { RegionsModule } from './regions/regions.module';
 import { ItemsModule } from './resources/resources.module';
 import { AbilitiesModule } from './abilities/abilities.module';
 import { WeaponsModule } from './weapons/weapons.module';
+import { BossesModule } from './bosses/bosses.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { WeaponsModule } from './weapons/weapons.module';
       database: 'sampledb',
       autoLoadEntities: true,
     }),
+    BossesModule,
   ],
 })
 export class AppModule {}

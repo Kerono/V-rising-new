@@ -1,53 +1,57 @@
-import { BossesIds } from "@/variables";
 import Image from "next/image";
 import styles from "./page.module.scss";
-import { FC } from "react";
+import { FC, Fragment } from "react";
 import Link from "next/link";
-import { getSpecificBoss } from "@/server/actions";
+import { getBoss } from "@/server/actions";
 import { AdditionalInfoCard } from "@/components/AdditionalInfoCard";
-import type { Info } from "@/app/items/[item]/page";
+import type { Info } from "@/variables";
 import { notFound } from "next/navigation";
+import { Rewards } from "@/components/Rewards";
 
 type Props = {
-  params: Promise<{ boss: BossesIds }>;
+  params: Promise<{ boss: string }>;
 };
 
 const Page: FC<Props> = async ({ params }) => {
-  const { boss } = await params;
-  const { searchId, bossesList, skillsList, resourcesList, weaponsList } =
-    await getSpecificBoss(boss);
-  const currentBoss = bossesList[searchId];
+  const { boss: bossId } = await params;
 
-  if (!currentBoss) notFound();
+  const boss = await getBoss(bossId);
 
-  const { title, description, location, rewards, img, level, region, attacks } =
-    currentBoss;
-  const info: Info[] = [
+  if (!boss) notFound();
+
+  const {
+    name,
+    description,
+    location,
+    locations_details,
+    img,
+    level,
+    ability,
+    weaponsRecipe,
+    resources,
+    attacks,
+  } = boss;
+
+  const cardInfo: Info[] = [
     {
       title: "Level",
       value: <div>{level}</div>,
     },
     {
       title: "Location",
-      value: <Link href={`/regions`}>{region}</Link>,
+      value: <Link href={`/regions`}>{location}</Link>,
     },
   ];
 
-  if (rewards.skills) {
-    info.push({
+  if (ability) {
+    const { id, name, img } = ability;
+    cardInfo.push({
       title: "Unlocked Vampire Powers",
       value: (
-        <div className={styles["skills-wrapper"]}>
-          {rewards.skills.map((skillId) => {
-            const { id, title, img } = skillsList[skillId];
-            return (
-              <Link key={id} href={`/abilities/${id}`}>
-                <div>{title}</div>
-                <Image src={img} alt={title} width={30} height={30} />
-              </Link>
-            );
-          })}
-        </div>
+        <Link className={styles["skills-wrapper"]} href={`/abilities/${id}`}>
+          <div>{name}</div>
+          <Image src={img} alt={name} width={30} height={30} />
+        </Link>
       ),
     });
   }
@@ -55,67 +59,55 @@ const Page: FC<Props> = async ({ params }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <div className={styles.title}>{title}</div>
+        <div className={styles.title}>{name}</div>
         <div>{description}</div>
-        <div>Location</div>
-        <div>{location}</div>
-        {rewards.skills && (
+        <div className={styles.title}>Location</div>
+        <div>{locations_details}</div>
+
+        {ability && (
           <>
-            <div>Rewards</div>
+            <div className={styles.title}>Rewards</div>
             <div className={styles["rewards-wrapper"]}>
-              {rewards.skills.map((skillId) => {
-                const { id, title, img } = skillsList[skillId];
-                return (
-                  <Link
-                    className={styles["rewards-content"]}
-                    href={`/abilities/${id}`}
-                    key={id}
-                  >
-                    <Image src={img} alt={title} width={30} height={30} />
-                    <div>{title}</div>
-                  </Link>
-                );
-              })}
+              <Rewards
+                id={ability.id}
+                name={ability.name}
+                img={ability.img}
+                url={`/abilities/${ability.id}`}
+              />
             </div>
           </>
         )}
-        <div>Drops</div>
+        <div className={styles.title}>Drops</div>
         <div className={styles["rewards-wrapper"]}>
-          {rewards.drop.map((resourceId) => {
-            const { id, img, name } = resourcesList[resourceId];
+          {resources.map((resource) => {
+            const { id, img, name } = resource;
+
             return (
-              <Link
-                className={styles["rewards-content"]}
-                href={`/items/${id}`}
-                key={id}
-              >
-                <Image src={img} alt={name} width={30} height={30} />
-                <div>{name}</div>
-              </Link>
+              <Fragment key={id}>
+                <Rewards
+                  id={id}
+                  name={name}
+                  img={img}
+                  url={`/resources/${id}`}
+                />
+              </Fragment>
             );
           })}
         </div>
-        {rewards.recipes && (
+        {weaponsRecipe && (
           <>
-            <div>Weapons</div>
+            <div className={styles.title}>Weapons</div>
             <div className={styles["rewards-wrapper"]}>
-              {rewards.recipes.map((recipe) => {
-                const { title, id, img } = weaponsList[recipe];
-                return (
-                  <Link
-                    className={styles["rewards-content"]}
-                    key={id}
-                    href={`/weapons/${id}`}
-                  >
-                    <div>{title}</div>
-                    <Image src={img} alt={title} width={20} height={20} />
-                  </Link>
-                );
-              })}
+              <Rewards
+                id={weaponsRecipe.id}
+                name={weaponsRecipe.name}
+                img={weaponsRecipe.img}
+                url={`/weapons/${weaponsRecipe.id}`}
+              />
             </div>
           </>
         )}
-        <div>Attacks</div>
+        <div className={styles.title}>Attacks</div>
         <div className={styles["attacks-content"]}>
           {attacks.map((attack, index) => (
             <div key={index}>{attack}</div>
@@ -123,7 +115,7 @@ const Page: FC<Props> = async ({ params }) => {
         </div>
       </div>
 
-      <AdditionalInfoCard title={title} imgSrc={img} info={info} />
+      <AdditionalInfoCard title={name} imgSrc={img} info={cardInfo} />
     </div>
   );
 };

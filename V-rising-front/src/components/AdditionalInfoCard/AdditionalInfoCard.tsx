@@ -25,7 +25,7 @@ const AdditionalInfoCard: FC<Props> = ({
         {info.map(({ title, value }) => (
           <div className={styles.content} key={title}>
             <div>{title}</div>
-            <div>{value}</div>
+            {value}
           </div>
         ))}
       </div>

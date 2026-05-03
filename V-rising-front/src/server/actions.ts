@@ -9,6 +9,8 @@ import type {
   Abilities,
   Weapon,
   AbilityResponce,
+  BossesList,
+  BossResponse,
 } from "@/variables";
 import { getData } from "@/utils/getData";
 
@@ -48,30 +50,13 @@ export async function getWeapon(id: string): Promise<Weapon> {
   return getData(`${baseUrl}weapons/${id}`);
 }
 
-//TODO
-// type BossesData = {
-//   briefDecriptionBosses: BriefDescriptionBosses;
-//   bossesList: BossesList;
-// };
+export async function getBosses(): Promise<BossesList[]> {
+  return getData(`${baseUrl}bosses`);
+}
 
-// export async function getBriefDescriptionBosses() {
-//   const response = await fetch(`${baseUrl}/bosses`);
-//   const data: BossesData = await response.json();
-//   return data;
-// }
-
-// type SprecificBossInfo = {
-//   searchId: BossesIds;
-//   bossesList: BossesList;
-//   skillsList: SkillsList;
-//   resourcesList: ResourcesList;
-//   weaponsList: WeaponsList;
-// };
-
-// export async function getSpecificBoss(
-//   endpoint: BossesIds,
-// ): Promise<SprecificBossInfo> {
-//   const response = await fetch(`${baseUrl}/bosses/${endpoint}`);
-//   const data: SprecificBossInfo = await response.json();
-//   return data;
-// }
+export async function getBoss(id: string): Promise<BossResponse> {
+  return getData(`${baseUrl}bosses/${id}`);
+  // const response = await fetch(`${baseUrl}/bosses/${endpoint}`);
+  // const data: SprecificBossInfo = await response.json();
+  // return data;
+}

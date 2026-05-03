@@ -459,44 +459,302 @@ VALUES
   'leather'
 );
 
--- TODO доделать при составлении боссов
 CREATE TABLE bosses (
   id VARCHAR(50) not null unique,
-  name VARCHAR(50) not null
+  name VARCHAR(50) not null,
+  description Text not null,
+  location VARCHAR(50) not null,
+  locations_details Text not null,
+  img VARCHAR(50) not null,
+  level integer not null
 );
 
-INSERT INTO bosses (id,name) VALUES 
+INSERT INTO bosses ( id, name, description, location, locations_details, img, level) VALUES 
 (
   'tristan-the-vampire-hunter', 
-  'Tristan the vampire hunter'
+  'Tristan the vampire hunter',
+  'A cold-blooded killer, and the scion of a long line of vampire hunters.
+  Few are as prepared to face the rising tide of vampire threat as Tristan, 
+  and his drive to exterminate the last of the unholy threat is second to none.',
+  'Farbane Woods',
+  'Tristan can be found patrolling on the northern roads of the Farbane Woods. 
+  The Militia and Bandits are passive to him and will allow him to pass by them without issue, but he is hostile towards Undead and Creature enemies.',
+  'tristan-the-vampire-hunter.webp',
+  44
 ),
 (
   'alpha-the-white-wolf', 
-  'Alpha the white wolf'
+  'Alpha the white wolf',
+  'Alpha the White Wolf is the lowest level V Blood Carrier in V Rising, and likely the first that a player will successfully hunt. The Alpha Wolf will attack any non-wolf creatures that it meets along its path. 
+  Interestingly, if the player is in Wolf Form the Alpha Wolf will ignore them.',
+  'Farbane Woods',
+  'Alpha Wolf can be found roaming the roads of the Farbane Woods region. It tends to walk along the roads in a circuit around the central part of the region, near the Wolf Den.',
+  'alpha-the-white-wolf.webp',
+  16
 ),
 (
   'keely-the-frost-archer', 
-  'Keely the frost archer'
+  'Keely the frost archer',
+  'A cold-hearted bandit lieutenant, she oversees the animal husbandry and leather tanning camp in Farbane. Once a member of the Dunley militia, she was removed from her position for her brutal battlefield decision-making. 
+  Aside from being a crack shot, her enchanted arrows rain down icy death.',
+  'Farbane Woods',
+  'Keely can be found in the Bandit Trapper Camp in eastern Farbane Woods.',
+  'keely-the-frost-archer.webp',
+  20
 ),
 (
   'kodia-the-ferocious-bear', 
-  'Kodia the ferocious bear'
+  'Kodia the ferocious bear',
+  'This mother bear is said to be ancient. Rumor has it that she wears a scar from every Bandit King that has ever lived, a rite of passage for the position. Her life stands as testament to the fact that no bandit leader has ever done well enough to finish the job.',
+  'Farbane Woods',
+  'Kodia can be found in the Bear Cave in eastern Farbane Woods.',
+  'kodia-the-ferocious-bear.webp',
+  35
 ),
 (
   'nibbles-the-putrid-rat', 
-  'Nibbles the putrid rat'
+  'Nibbles the putrid rat',
+  'Farmers try to be diligent in keeping their pest problems under control, as legend says that any place too infested might find themselves visited by the Putrid Rat. No one is quite sure how it gets in, but they know it by the stench of rotting flesh and its carnivorous appetite.',
+  'anywhere',
+  'Nibbles cannot spawn naturally, it only appears when summoned via the 
+  Vermin Nest. Nibbles will be summoned where the Vermin Nest is placed and will return to that location if de-aggroed. It will not change locations even 
+  if the Vermin Nest is moved by the player after it was summoned.',
+  'nibbles-the-putrid-rat.webp',
+  35
 ),
 (
   'rufus-the-foreman', 
-  'Rufus the foreman'
+  'Rufus the foreman',
+  'A lieutenant of the bandit forces charged with looking over the logging camp. Just because he`s an expert woodworker doesn`t mean he doesn`t know his way around a crossbow, though. He didn`t rise up in the bandit ranks for nothing.',
+  'Farbane Woods',
+  'Rufus can be found in the Bandit Logging Camp in Farbane Woods alongside some other bandits.',
+  'rufus-the-foreman.webp',
+  20
 ),
 (
   'lidia-the-chaos-archer', 
-  'Lidia the chaos archer'
+  'Lidia the chaos archer',
+  'An adept but undisciplined archer, she lets her arrows fly and trusts that fate knows where to take them, and it works. Lidia is a force of chaos that cannot be contained, and the bandit king is happy to let her do as she likes as long as it benefits him.',
+  'Farbane Woods',
+  'Lidia can be found patrolling the roadway between Bandit Copper Mine and Bandit Logging Camp in central Farbane Woods.',
+  'lidia-the-chaos-archer.webp',
+  30
 ),
 (
   'bane-the-shadowblade', 
-  'Bane the shadowblade'
+  'Bane the shadowblade',
+  'Once a formidable swordsman and legendary graverobber, Bane was caught by the Cult of the Damned during one of his many heists. Seeing the benefit of his talent for infiltration, instead of killing him, they corrupted him into a servant of undeath. It`s said that his clandestine abilities were crucial in the capture and corruption of the Iron Mine over the Militia.',
+  'Dunley Farmlands',
+  'Bane can be found roaming the roads of Dunley Farmlands, disguised as a human.',
+  'bane-the-shadowblade.webp',
+  50
+);
+
+CREATE TABLE bosses_attacks (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  boss_id VARCHAR(50) references bosses(id),
+  description TEXT not null,
+  UNIQUE (boss_id, description)
+);
+
+INSERT INTO bosses_attacks (boss_id, description) VALUES 
+(
+  'bane-the-shadowblade',
+  'Triple Slash - He will slash at you three times. Third attack is a lunge which will incapacitate you.'
+),
+(
+  'bane-the-shadowblade',
+  'Triple Knife Throw - He will dash away from you and throw three knives at you.'
+),
+(
+  'bane-the-shadowblade',
+  'Dark Spin - His phrases will be all about Darkness or Black magic, He will do a purple AoE slash that surrounds him.'
+),
+(
+  'bane-the-shadowblade',
+  'Teleport Strike - He will teleport out of view and reappear near you to strike, which will incapacitate you.'
+),
+(
+  'lidia-the-chaos-archer',
+  'Row Shots - She shoots 3 arrows in a row that inflict Ignite.'
+),
+(
+  'lidia-the-chaos-archer',
+  'Invisibility - She goes turns invisible in order to run away and reposition.'
+),
+(
+  'lidia-the-chaos-archer',
+  'Arrow Barrage - She shouts "Think on your feet!" and shoot 4 arrows that leave an area of effect that inflicts Ignite.'
+),
+(
+  'rufus-the-foreman',
+  'Bite - Standard melee attack.'
+),
+(
+  'rufus-the-foreman',
+  'Lunge - The Alpha Wolf will crouch down for a second in preparation and then launch itself forward in a straight line.'
+),
+(
+  'rufus-the-foreman',
+  'Rage - The Alpha Wolf howls and glows red, launch itself in a straight line and bite 2 times.'
+),
+(
+  'rufus-the-foreman',
+  'Summon Minions - The Alpha Wolf stops for a moment, howls, and summons 2 regular wolves to join the fight.'
+),
+(
+  'alpha-the-white-wolf',
+  'Bite - Standard melee attack.'
+),
+(
+  'alpha-the-white-wolf',
+  'Lunge - The Alpha Wolf will crouch down for a second in preparation and then launch itself forward in a straight line.'
+),
+(
+  'alpha-the-white-wolf',
+  'Rage - The Alpha Wolf howls and glows red, launch itself in a straight line and bite 2 times.'
+),
+(
+  'alpha-the-white-wolf',
+  'Summon Minions - The Alpha Wolf stops for a moment, howls, and summons 2 regular wolves to join the fight.'
+),
+(
+  'keely-the-frost-archer',
+  'Triple Shot - She shoots 3 arrows at the same time in multiple directions and inflict Chill.'
+),
+(
+  'keely-the-frost-archer',
+  'Invisibility - She turns invisible while running to reposition herself.'
+),
+(
+  'keely-the-frost-archer',
+  'Arrow Barrage - She shouts "Freeze!" and shoots 10 arrows upward that fall around her and inflict Chill.'
+),
+(
+  'tristan-the-vampire-hunter',
+  'Flaming strike - He coats his sword with fire and then swipes forward in an overhead swing after a short delay. This attack lights the player on fire if it hits them.'
+),
+(
+  'tristan-the-vampire-hunter',
+  'Icy swing - He coats his sword with ice and then immediately sweeps it in a wide arc in front of him that inflicts Chill. He often uses this as a follow-up attack after Flaming strike.'
+),
+(
+  'tristan-the-vampire-hunter',
+  'Lunge - He leaps forward while thrusting his sword. This attack briefly snares the player if it hits them, but can be blocked by counter or shield abilities.'
+),
+(
+  'tristan-the-vampire-hunter',
+  'Fire Bombs - He throws a fire bomb in the air which explodes into 5 separate bombs, lighting the ground on fire for several seconds when they land. 
+  He will often follow up this attack by firing his crossbow immediately afterwards.'
+),
+(
+  'kodia-the-ferocious-bear',
+  'Smash - Basic melee attack.'
+),
+(
+  'kodia-the-ferocious-bear',
+  'Crush - It slams the ground, causing a large number of rocks to fall from the ceiling 4 times in a circle radiating out from them. These rocks cannot be blocked by counters.'
+),
+(
+  'kodia-the-ferocious-bear',
+  'Rage - It roars and glows red, automatically snaring the player and gaining increased attack speed for 3 attacks.'
+),
+(
+  'kodia-the-ferocious-bear',
+  'Charge - It crouches on its haunches before charging forward in a straight line.'
+),
+(
+  'nibbles-the-putrid-rat',
+  'Bite - The standard melee attack.'
+),
+(
+  'nibbles-the-putrid-rat',
+  'Rage - Nibbles glows red, then melee attacks 6 times in a row.'
+),
+(
+  'nibbles-the-putrid-rat',
+  'Poison Explosion - Nibbles shakes its coat and releases a green poison mist that explodes in an area around it after a delay.'
+),
+(
+  'nibbles-the-putrid-rat',
+  'Summon Minions - Nibbles burrows into the ground, temporarily leaving the fight while summoning 3 Giant Rats.'
+);
+
+CREATE TABLE bosses_resources (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  boss_id VARCHAR(50) references bosses(id),
+  resource_id VARCHAR(50) references resources(id),
+  UNIQUE (boss_id, resource_id)
+);
+
+INSERT INTO bosses_resources (boss_id,resource_id) VALUES 
+(
+  'bane-the-shadowblade',
+  'oil'
+),
+(
+  'bane-the-shadowblade',
+  'rugged-hide'
+),
+(
+  'lidia-the-chaos-archer',
+  'simple-wood'
+),
+(
+  'lidia-the-chaos-archer',
+  'hallow-wood'
+),
+(
+  'rufus-the-foreman',
+  'simple-wood'
+),
+(
+  'rufus-the-foreman',
+  'hallow-wood'
+),
+(
+  'alpha-the-white-wolf',
+  'rugged-hide'
+),
+(
+  'alpha-the-white-wolf',
+  'simple-wood'
+),
+(
+  'keely-the-frost-archer',
+  'fish'
+),
+(
+  'keely-the-frost-archer',
+  'grave-dust'
+),
+(
+  'tristan-the-vampire-hunter',
+  'copper-ingot'
+),
+(
+  'tristan-the-vampire-hunter',
+  'copper-ore'
+),
+(
+  'kodia-the-ferocious-bear',
+  'oil'
+),
+(
+  'kodia-the-ferocious-bear',
+  'fish-bone'
+),
+(
+  'kodia-the-ferocious-bear',
+  'leather'
+),
+(
+  'nibbles-the-putrid-rat',
+  'bone'
+),
+(
+  'nibbles-the-putrid-rat',
+  'hallow-wood'
 );
 
 -- //TODO markdown check if needed
