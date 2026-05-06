@@ -40,21 +40,18 @@ export class ItemsService {
   ) {}
 
   async getResources(): Promise<AllResourcesResp> {
-    const resources = this.resourcesRepository.createQueryBuilder('resource');
-    const resourcesCategories =
+    const resourcesQuery =
+      this.resourcesRepository.createQueryBuilder('resource');
+    const resources = await resourcesQuery.getMany();
+
+    const resourcesCategoriesQuery =
       this.resourcesCategoriesRepository.createQueryBuilder('categories');
 
-    const allResourcesCategories = await resourcesCategories.getMany();
-    const allResources = await resources.getMany();
-
-    const resourcesEnemiesQuery =
-      this.resourcesEnemiesRepository.createQueryBuilder('resourceEnemy');
-
-    const allResourcesEnemies = await resourcesEnemiesQuery.getMany();
+    const resourcesCategories = await resourcesCategoriesQuery.getMany();
 
     const resourcesList: { [id: string]: ResourcesFullInfo } = {};
 
-    for (const item of allResources) {
+    for (const item of resources) {
       const {
         id,
         name,
@@ -65,7 +62,7 @@ export class ItemsService {
         img,
       } = item;
 
-      const category = allResourcesCategories.find(
+      const category = resourcesCategories.find(
         (caregorie) => caregorie.id === category_id,
       );
 
@@ -85,6 +82,11 @@ export class ItemsService {
       };
     }
 
+    const resourcesEnemiesQuery =
+      this.resourcesEnemiesRepository.createQueryBuilder('resourceEnemy');
+
+    const allResourcesEnemies = await resourcesEnemiesQuery.getMany();
+
     for (const resourceEnemy of allResourcesEnemies) {
       const { enemy_id, resource_id } = resourceEnemy;
 
@@ -99,22 +101,22 @@ export class ItemsService {
 
     const resourcesMap: { [categoryId: string]: string[] } = {};
 
-    for (const { id } of allResourcesCategories) {
+    for (const { id } of resourcesCategories) {
       resourcesMap[id] = [];
     }
 
-    for (const item of allResources) {
+    for (const item of resources) {
       resourcesMap[item.category_id].push(item.id);
     }
 
-    const resourcesGroupsResp: ResourcesGroups[] = allResourcesCategories.map(
+    const resourcesGroups: ResourcesGroups[] = resourcesCategories.map(
       (category) => ({
         title: category.name,
         ids: resourcesMap[category.id],
       }),
     );
 
-    return { resourcesList, resourcesGroups: resourcesGroupsResp };
+    return { resourcesList, resourcesGroups };
   }
 
   async getRecepiesInfo(

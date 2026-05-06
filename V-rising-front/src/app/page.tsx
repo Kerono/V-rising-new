@@ -6,7 +6,6 @@ import { range } from "@/utils/range";
 import { newsPerPage } from "@/variables";
 
 const Home = () => {
-  //TODO
   return (
     <div className={styles.wrapper}>
       <div>

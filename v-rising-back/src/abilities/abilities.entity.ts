@@ -51,7 +51,6 @@ export class Abilities_Notes extends BaseEntity {
   description: string;
 }
 
-//TODO complete bosses table
 @Entity()
 export class Bosses extends BaseEntity {
   @Column({ type: 'varchar' })

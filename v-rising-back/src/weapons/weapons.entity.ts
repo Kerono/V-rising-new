@@ -87,7 +87,6 @@ export class Weapons_Bosses extends BaseEntity {
   boss_id: string;
 }
 
-//TODO complete bosses table
 @Entity()
 export class Bosses extends BaseEntity {
   @Column({ type: 'varchar' })
