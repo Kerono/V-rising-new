@@ -12,7 +12,6 @@ import {
   Recipes,
   Enemies,
 } from './resources.entity';
-import { defaultUrl } from 'src/variables';
 import type {
   AllResourcesResp,
   ResourcesFullInfo,
@@ -22,7 +21,7 @@ import type {
   RecipesResponce,
   ResourcesList,
 } from './resources.types';
-import { clearDuplicates } from 'src/utils/helpers';
+import { clearDuplicates } from '../utils/helpers';
 
 @Injectable()
 export class ItemsService {
@@ -74,7 +73,7 @@ export class ItemsService {
         id,
         name,
         description,
-        img: `${defaultUrl}images/${img}`,
+        img,
         category: category.name,
         isTeleportable: is_teleportable,
         stackSize: stack_size,
@@ -247,7 +246,7 @@ export class ItemsService {
         id,
         name,
         description,
-        img: `${defaultUrl}images/${img}`,
+        img,
         category: category.name,
         isTeleportable: is_teleportable,
         stackSize: stack_size,

@@ -6,6 +6,7 @@ import { ItemsModule } from './resources/resources.module';
 import { AbilitiesModule } from './abilities/abilities.module';
 import { WeaponsModule } from './weapons/weapons.module';
 import { BossesModule } from './bosses/bosses.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -16,14 +17,14 @@ import { BossesModule } from './bosses/bosses.module';
     WeaponsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
+      host: 'postgresdb',
       username: 'postgres',
-      password: 'nestjscourse',
-      database: 'sampledb',
+      password: 'nestjs',
+      database: 'v-rising',
       autoLoadEntities: true,
     }),
     BossesModule,
+    HealthModule,
   ],
 })
 export class AppModule {}

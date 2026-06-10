@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { defaultUrl } from 'src/variables';
 import {
   Bosses,
   Abilities_Bosses,
@@ -72,7 +71,7 @@ export class BossesService {
       description,
       location,
       locations_details,
-      img: `${defaultUrl}images/${img}`,
+      img,
       level,
       attacks: [],
       resources: [],
@@ -97,7 +96,7 @@ export class BossesService {
       bossResponse.ability = {
         id,
         name: title,
-        img: `${defaultUrl}images/${img}`,
+        img,
       };
     }
 
@@ -131,7 +130,7 @@ export class BossesService {
       bossResponse.resources.push({
         id,
         name,
-        img: `${defaultUrl}images/${img}`,
+        img,
       });
     }
 
@@ -154,7 +153,7 @@ export class BossesService {
       bossResponse.weaponsRecipe = {
         id,
         name,
-        img: `${defaultUrl}images/${img}`,
+        img,
       };
     }
 

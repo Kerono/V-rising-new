@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { News } from './news.entity';
 import { NewsResponce, NewsData } from './news.types';
-import { newsPerPage, defaultUrl } from 'src/variables';
+import { newsPerPage } from '../variables';
 
 @Injectable()
 export class NewsListService {
@@ -34,7 +34,7 @@ export class NewsListService {
           id,
           title,
           info,
-          img: `${defaultUrl}images/${img}`,
+          img,
         };
       }),
       totalCount: allNews.length,
@@ -56,7 +56,7 @@ export class NewsListService {
     const { img } = searchElem;
     const responce: NewsData = {
       ...searchElem,
-      img: `${defaultUrl}images/${img}`,
+      img,
     };
 
     return responce;

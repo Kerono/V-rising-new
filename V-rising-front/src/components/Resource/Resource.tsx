@@ -3,6 +3,7 @@ import styles from "./resource.module.scss";
 import { ResourceResponce } from "@/variables";
 import { Item } from "../Item";
 import { AdditionalInfoCard } from "../AdditionalInfoCard";
+import { imageUrl } from "@/utils/imageUrl";
 import type { Info } from "@/variables";
 
 type Props = Omit<
@@ -72,13 +73,14 @@ const Resource: FC<Props> = ({
                 <div className={styles["items-wrapper"]}>
                   {createFromIds.map((res) => {
                     const { img, name, id } = resourcesList[res];
+                    const imgUrl = imageUrl(img);
                     const isCurrentlySelected = currentMaterialId === id;
                     return (
                       <div key={id} className={styles.items}>
                         <Item
                           id={id}
                           name={name}
-                          img={img}
+                          img={imgUrl}
                           isCurrentlySelected={isCurrentlySelected}
                         />
                       </div>
@@ -88,6 +90,7 @@ const Resource: FC<Props> = ({
                 <div className={styles["items-wrapper"]}>
                   {resultId.map((item) => {
                     const { img, name, id } = resourcesList[item];
+                    const imgUrl = imageUrl(img);
                     const isCurrentlySelected = currentMaterialId === id;
                     return (
                       <div key={id} className={styles.items}>
@@ -95,7 +98,7 @@ const Resource: FC<Props> = ({
                           key={id}
                           id={id}
                           name={name}
-                          img={img}
+                          img={imgUrl}
                           isCurrentlySelected={isCurrentlySelected}
                         />
                       </div>
@@ -107,7 +110,7 @@ const Resource: FC<Props> = ({
           })}
         </div>
       </div>
-      <AdditionalInfoCard title={name} imgSrc={img} info={info} />
+      <AdditionalInfoCard title={name} imgSrc={imageUrl(img)} info={info} />
     </div>
   );
 };

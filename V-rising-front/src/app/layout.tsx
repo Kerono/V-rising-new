@@ -13,7 +13,6 @@ const RootLayout: FC<Props> = async ({ children }) => {
 
   const currentStyles =
     currentTheme === "light" ? lightThemeStyles : darkThemeStyles;
-
   return (
     <html lang="en" style={currentStyles} data-color-theme={currentTheme}>
       <body>

@@ -4,6 +4,7 @@ import { AdditionalInfoCard } from "@/components/AdditionalInfoCard";
 import type { AbilityResponce } from "@/variables";
 import type { Info } from "@/variables";
 import Link from "next/link";
+import { imageUrl } from "@/utils/imageUrl";
 
 type Props = { data: AbilityResponce };
 
@@ -16,7 +17,7 @@ const Ability: FC<Props> = ({ data }) => {
       id: boss.id,
       bossName: boss.name,
     };
-
+  const imgUrl = imageUrl(img);
   const info: Info[] = [
     {
       title: "Unlock Requirement",
@@ -55,7 +56,7 @@ const Ability: FC<Props> = ({ data }) => {
           </>
         )}
       </div>
-      <AdditionalInfoCard title={title} imgSrc={img} info={info} />
+      <AdditionalInfoCard title={title} imgSrc={imgUrl} info={info} />
     </div>
   );
 };

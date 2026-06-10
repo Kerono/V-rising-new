@@ -2,7 +2,6 @@ import { getAbility } from "@/server/actions";
 import { FC } from "react";
 import { notFound } from "next/navigation";
 import { Ability } from "@/components/Ability";
-
 type Props = {
   params: Promise<{ ability: string }>;
 };

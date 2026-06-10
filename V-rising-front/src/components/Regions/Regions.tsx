@@ -2,8 +2,11 @@ import styles from "./regions.module.scss";
 import type { Regions as TRegions } from "@/variables";
 import Image from "next/image";
 import { FC } from "react";
+import { imageUrl } from "@/utils/imageUrl";
 
 export const Regions: FC<TRegions> = ({ img, data }) => {
+  const imgUrl = imageUrl(img);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
@@ -22,7 +25,7 @@ export const Regions: FC<TRegions> = ({ img, data }) => {
       </div>
       <div className={styles["image-wrapper"]}>
         <Image
-          src={img}
+          src={imgUrl}
           alt="regions"
           width={400}
           height={200}

@@ -7,6 +7,7 @@ import { getNews } from "@/server/actions";
 import { Skeleton } from "../Skeleton";
 import { newsPerPage } from "@/variables";
 import { range } from "@/utils/range";
+import { imageUrl } from "@/utils/imageUrl";
 
 type Props = {
   initialData: NewsList[];
@@ -34,9 +35,12 @@ export const News: FC<Props> = ({ initialData, totalCount }) => {
   return (
     <>
       <div className={styles["cards-container"]}>
-        {news.map(({ id, title, img }) => (
-          <Card key={id} href={`./news/${id}`} img={img} data={title} />
-        ))}
+        {news.map(({ id, title, img }) => {
+          const imgUrl = imageUrl(img);
+          return (
+            <Card key={id} href={`./news/${id}`} img={imgUrl} data={title} />
+          );
+        })}
         {isLoading &&
           range(skeletonsForNews).map((index) => (
             <Skeleton key={index} height="195px" />

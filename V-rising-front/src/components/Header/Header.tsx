@@ -1,6 +1,6 @@
 "use client";
 import { Moon, Sun } from "react-feather";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "./header.module.scss";
 import Cookies from "js-cookie";
 import { darkThemeStyles, lightThemeStyles } from "@/variables";
@@ -13,8 +13,8 @@ type Props = {
   initialTheme: string;
 };
 
-export const Header: FC<Props> = ({ initialTheme }: Props) => {
-  const [theme, setTheme] = React.useState<string>(initialTheme);
+export const Header: FC<Props> = ({ initialTheme }) => {
+  const [theme, setTheme] = useState<string>(initialTheme);
 
   function handleTheme() {
     const nextTheme = theme === "light" ? "dark" : "light";

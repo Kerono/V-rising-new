@@ -1,6 +1,7 @@
 import styles from "./page.module.scss";
 import { getAbilities } from "@/server/actions";
 import { Card } from "@/components/Card";
+import { imageUrl } from "@/utils/imageUrl";
 
 const Page = async () => {
   const skills = await getAbilities();
@@ -37,8 +38,14 @@ const Page = async () => {
       <div className={styles["abilities-wrapper"]}>
         {abilitiesSubgroups.bloodPowersIds.map((abilityId) => {
           const { id, title, img } = abilitiesInfo[abilityId];
+          const imgUrl = imageUrl(img);
           return (
-            <Card key={id} href={`/abilities/${id}`} img={img} data={title} />
+            <Card
+              key={id}
+              href={`/abilities/${id}`}
+              img={imgUrl}
+              data={title}
+            />
           );
         })}
       </div>
@@ -46,8 +53,14 @@ const Page = async () => {
       <div className={styles["abilities-wrapper"]}>
         {abilitiesSubgroups.shapeshiftingPowersIds.map((abilityId) => {
           const { id, title, img } = abilitiesInfo[abilityId];
+          const imgUrl = imageUrl(img);
           return (
-            <Card key={id} href={`/abilities/${id}`} img={img} data={title} />
+            <Card
+              key={id}
+              href={`/abilities/${id}`}
+              img={imgUrl}
+              data={title}
+            />
           );
         })}
       </div>

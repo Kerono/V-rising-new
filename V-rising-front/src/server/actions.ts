@@ -1,4 +1,3 @@
-import { baseUrl } from "@/variables";
 import type {
   NewsList,
   Regions,
@@ -15,48 +14,45 @@ import type {
 import { getData } from "@/utils/getData";
 
 export async function getNews(page: number): Promise<GetNews> {
-  return getData(`${baseUrl}news?page=${page}`);
+  return getData(`news?page=${page}`);
 }
 
 export async function getSpecificNews(endpoint: string): Promise<NewsList> {
-  return getData(`${baseUrl}news/${endpoint}`);
+  return getData(`news/${endpoint}`);
 }
 
 export async function getRegions(): Promise<Regions> {
-  return getData(`${baseUrl}regions`);
+  return getData("regions");
 }
 
 export async function getResources(): Promise<AllResources> {
-  return getData(`${baseUrl}resources`);
+  return getData("resources");
 }
 
 export async function getResource(endpoint: string): Promise<ResourceResponce> {
-  return getData(`${baseUrl}resources/${endpoint}`);
+  return getData(`resources/${endpoint}`);
 }
 
 export async function getAbilities(): Promise<Abilities> {
-  return getData(`${baseUrl}abilities`);
+  return getData("abilities");
 }
 
 export async function getAbility(endpoint: string): Promise<AbilityResponce> {
-  return getData(`${baseUrl}abilities/${endpoint}`);
+  return getData(`abilities/${endpoint}`);
 }
 
 export async function getWeapons(): Promise<Weapons> {
-  return getData(`${baseUrl}weapons`);
+  return getData("weapons");
 }
 
 export async function getWeapon(id: string): Promise<Weapon> {
-  return getData(`${baseUrl}weapons/${id}`);
+  return getData(`weapons/${id}`);
 }
 
 export async function getBosses(): Promise<BossesList[]> {
-  return getData(`${baseUrl}bosses`);
+  return getData("bosses");
 }
 
 export async function getBoss(id: string): Promise<BossResponse> {
-  return getData(`${baseUrl}bosses/${id}`);
-  // const response = await fetch(`${baseUrl}/bosses/${endpoint}`);
-  // const data: SprecificBossInfo = await response.json();
-  // return data;
+  return getData(`bosses/${id}`);
 }

@@ -20,8 +20,6 @@ export const lightThemeStyles: CssVariables = {
   ["--header-links-hover"]: "darkgoldenrod",
 };
 
-export const baseUrl = "http://localhost:3000/";
-
 export const newsPerPage = 4;
 
 export const linksData: LinksData[] = [

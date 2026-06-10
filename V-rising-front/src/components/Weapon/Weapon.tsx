@@ -3,6 +3,7 @@ import styles from "./weapon.module.scss";
 import type { Weapon as TWeapon } from "@/variables";
 import Link from "next/link";
 import Image from "next/image";
+import { imageUrl } from "@/utils/imageUrl";
 
 const titles = ["Skill", "Description", "Tier Requirement"];
 
@@ -30,21 +31,19 @@ const Weapon: FC<Props> = ({ data }) => {
           </div>
         ))}
         {skills.map(({ id, skill, description, tierRequirementWeapon }) => {
+          const skillImgUrl = imageUrl(skill.img);
+          const weaponImgUrl = imageUrl(tierRequirementWeapon.img);
+
           return (
             <Fragment key={id}>
               <div>
                 <div>{skill.name}</div>
-                <Image src={skill.img} alt={id} width={40} height={40} />
+                <Image src={skillImgUrl} alt={id} width={40} height={40} />
               </div>
               <div>{description}</div>
               <div>
                 <div>{tierRequirementWeapon.name}</div>
-                <Image
-                  src={tierRequirementWeapon.img}
-                  alt={id}
-                  width={40}
-                  height={40}
-                />
+                <Image src={weaponImgUrl} alt={id} width={40} height={40} />
               </div>
             </Fragment>
           );

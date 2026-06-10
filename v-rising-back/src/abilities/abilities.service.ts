@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { defaultUrl } from 'src/variables';
 import {
   Abilities,
   Abilities_Bosses,
@@ -49,7 +48,7 @@ export class AbilitiesService {
       abilitiesInfo[id] = {
         id,
         title,
-        img: `${defaultUrl}images/${img}`,
+        img,
         description,
         type,
         castTime: cast_time,
@@ -126,7 +125,7 @@ export class AbilitiesService {
     const abilityResponce: AbilityResponce = {
       id: abilityId,
       title,
-      img: `${defaultUrl}images/${img}`,
+      img,
       description,
       type,
       castTime: cast_time,

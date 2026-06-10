@@ -1,0 +1,91 @@
+services:
+  postgresdb:
+    build:
+      context: ./database
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+    networks:
+      - db
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@example.org
+      PGADMIN_DEFAULT_PASSWORD: test
+    ports:
+      - 80:80
+    networks:
+      - db
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: ./v-rising-back
+      target: dev
+    volumes:
+      - /node/app/node_modules
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/health",
+        ]
+      # test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
+    networks:
+      - backend
+      - db
+    ports:
+      - 3000:3000
+    develop:
+      watch:
+        - action: sync
+          path: ./v-rising-back
+          target: /node/app
+          ignore:
+            - node_modules/
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./V-rising-front
+      target: dev
+    volumes:
+      - /node/app/node_modules
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:4000/api/health-check",
+        ]
+    networks:
+      - backend
+    ports:
+      - 4000:4000
+    develop:
+      watch:
+        - action: sync
+          path: ./V-rising-front
+          target: /container/app
+          ignore:
+            - node_modules/
+    depends_on:
+      backend:
+        condition: service_healthy
+
+networks:
+  db:
+  backend:

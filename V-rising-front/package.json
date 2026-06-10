@@ -6,7 +6,8 @@
     "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest"
   },
   "dependencies": {
     "express": "^5.1.0",
@@ -20,12 +21,19 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/jest": "^30.0.0",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.15.30",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "type": "module"

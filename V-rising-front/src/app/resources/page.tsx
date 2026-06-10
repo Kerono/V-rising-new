@@ -1,6 +1,7 @@
 import styles from "./page.module.scss";
 import { getResources } from "@/server/actions";
 import { Card } from "@/components/Card";
+import { imageUrl } from "@/utils/imageUrl";
 
 const Page = async () => {
   const data = await getResources();
@@ -15,12 +16,13 @@ const Page = async () => {
             <div className={styles.content}>
               {ids.map((id) => {
                 const { name, img } = resourcesList[id];
+                const imgUrl = imageUrl(img);
                 return (
                   <Card
                     key={id}
                     href={`/resources/${id}`}
                     data={name}
-                    img={img}
+                    img={imgUrl}
                   />
                 );
               })}

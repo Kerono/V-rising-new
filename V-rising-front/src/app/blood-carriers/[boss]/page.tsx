@@ -7,6 +7,7 @@ import { AdditionalInfoCard } from "@/components/AdditionalInfoCard";
 import type { Info } from "@/variables";
 import { notFound } from "next/navigation";
 import { Rewards } from "@/components/Rewards";
+import { imageUrl } from "@/utils/imageUrl";
 
 type Props = {
   params: Promise<{ boss: string }>;
@@ -45,12 +46,13 @@ const Page: FC<Props> = async ({ params }) => {
 
   if (ability) {
     const { id, name, img } = ability;
+    const imgUrl = imageUrl(img);
     cardInfo.push({
       title: "Unlocked Vampire Powers",
       value: (
         <Link className={styles["skills-wrapper"]} href={`/abilities/${id}`}>
           <div>{name}</div>
-          <Image src={img} alt={name} width={30} height={30} />
+          <Image src={imgUrl} alt={name} width={30} height={30} />
         </Link>
       ),
     });
@@ -71,7 +73,7 @@ const Page: FC<Props> = async ({ params }) => {
               <Rewards
                 id={ability.id}
                 name={ability.name}
-                img={ability.img}
+                img={imageUrl(ability.img)}
                 url={`/abilities/${ability.id}`}
               />
             </div>
@@ -81,13 +83,14 @@ const Page: FC<Props> = async ({ params }) => {
         <div className={styles["rewards-wrapper"]}>
           {resources.map((resource) => {
             const { id, img, name } = resource;
+            const imgUrl = imageUrl(img);
 
             return (
               <Fragment key={id}>
                 <Rewards
                   id={id}
                   name={name}
-                  img={img}
+                  img={imgUrl}
                   url={`/resources/${id}`}
                 />
               </Fragment>
@@ -101,7 +104,7 @@ const Page: FC<Props> = async ({ params }) => {
               <Rewards
                 id={weaponsRecipe.id}
                 name={weaponsRecipe.name}
-                img={weaponsRecipe.img}
+                img={imageUrl(weaponsRecipe.img)}
                 url={`/weapons/${weaponsRecipe.id}`}
               />
             </div>
@@ -115,7 +118,7 @@ const Page: FC<Props> = async ({ params }) => {
         </div>
       </div>
 
-      <AdditionalInfoCard title={name} imgSrc={img} info={cardInfo} />
+      <AdditionalInfoCard title={name} imgSrc={imageUrl(img)} info={cardInfo} />
     </div>
   );
 };

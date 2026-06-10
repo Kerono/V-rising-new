@@ -11,7 +11,6 @@ import {
 } from './weapons.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { defaultUrl } from 'src/variables';
 import type { WeaponsResp, Weapon, BossesList } from './weapons.types';
 
 @Injectable()
@@ -37,7 +36,7 @@ export class WeaponsService {
       weaponsList[id] = {
         id,
         name,
-        img: `${defaultUrl}images/${img}`,
+        img,
       };
     }
 
@@ -131,11 +130,11 @@ export class WeaponsService {
         id,
         description,
         skill: {
-          img: `${defaultUrl}images/${skill_img}`,
+          img: skill_img,
           name: skill_name,
         },
         tierRequirementWeapon: {
-          img: `${defaultUrl}images/${tier_requirements_weapon_img}`,
+          img: tier_requirements_weapon_img,
           name: tier_requirements_weapon_name,
         },
       });
