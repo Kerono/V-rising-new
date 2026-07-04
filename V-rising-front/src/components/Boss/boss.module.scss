@@ -1,0 +1,47 @@
+$base-gap: 8px;
+
+.wrapper {
+  max-width: 60rem;
+  padding: 12px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: $base-gap;
+
+  .title {
+    font-weight: bold;
+  }
+
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $base-gap;
+  }
+
+  .skills-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .rewards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .attacks-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-left: 12px;
+  }
+}
+
+@media (max-width: 500px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+}

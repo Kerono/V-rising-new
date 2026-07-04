@@ -1,0 +1,1 @@
+export { ResourcesGroups } from "./ResourcesGroups";

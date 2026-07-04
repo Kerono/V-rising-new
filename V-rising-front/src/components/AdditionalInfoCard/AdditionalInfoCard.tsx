@@ -17,7 +17,7 @@ const AdditionalInfoCard: FC<Props> = ({
   info,
 }) => {
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} role="card">
       <div className={styles.title}>{title}</div>
       <Image priority width={120} height={120} src={imgSrc} alt={title} />
       {description && <div>{description}</div>}

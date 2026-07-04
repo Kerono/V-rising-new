@@ -6,12 +6,18 @@ import type { Info } from "@/variables";
 import Link from "next/link";
 import { imageUrl } from "@/utils/imageUrl";
 
-type Props = { data: AbilityResponce };
+export type Props = Omit<AbilityResponce, "id" | "subgroup">;
 
-const Ability: FC<Props> = ({ data }) => {
-  const { title, img, description, type, castTime, notes, getByBossId, boss } =
-    data;
-
+const Ability: FC<Props> = ({
+  title,
+  img,
+  description,
+  type,
+  castTime,
+  notes,
+  getByBossId,
+  boss,
+}) => {
   const requirements = getByBossId &&
     boss && {
       id: boss.id,

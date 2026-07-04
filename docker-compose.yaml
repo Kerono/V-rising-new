@@ -38,7 +38,6 @@ services:
           "--spider",
           "http://localhost:3000/health",
         ]
-      # test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
     networks:
       - backend
       - db

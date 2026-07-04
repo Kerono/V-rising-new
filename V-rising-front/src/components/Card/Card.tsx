@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "./card.module.scss";
 import { FC } from "react";
 
-type Props = {
+export type Props = {
   href: string;
   img: string;
   data: string;

@@ -9,6 +9,7 @@ type Props = {
 const Skeleton: FC<Props> = ({ width = "100%", height = "150px" }) => {
   return (
     <div
+      role={"skeleton"}
       className={styles.card}
       style={{
         width,

@@ -1,19 +1,15 @@
 import { FC, Fragment } from "react";
 import styles from "./weapon.module.scss";
-import type { Weapon as TWeapon } from "@/variables";
+import type { Weapon as WeaponT } from "@/variables";
 import Link from "next/link";
 import Image from "next/image";
 import { imageUrl } from "@/utils/imageUrl";
 
 const titles = ["Skill", "Description", "Tier Requirement"];
 
-type Props = {
-  data: TWeapon;
-};
+type Props = Omit<WeaponT, "id">;
 
-const Weapon: FC<Props> = ({ data }) => {
-  const { name, boss, description, skills } = data;
-
+const Weapon: FC<Props> = ({ name, boss, description, skills }) => {
   return (
     <div className={styles.wrapper}>
       <div>{name}</div>

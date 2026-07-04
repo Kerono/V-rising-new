@@ -3,7 +3,6 @@ import { getApiUrl } from "./getApiUrl";
 
 export const getData = async <T>(path: string): Promise<T> => {
   const baseUrl = getApiUrl();
-  console.log(`${baseUrl}${path}`, "together");
   const response = await fetch(`${baseUrl}${path}`, {
     headers: { "Access-Control-Allow-Origin": "*" },
   });

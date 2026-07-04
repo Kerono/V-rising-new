@@ -1,9 +1,8 @@
 import { getSpecificNews } from "@/server/actions";
-import Image from "next/image";
-import styles from "./page.module.scss";
 import { notFound } from "next/navigation";
 import { FC } from "react";
 import { imageUrl } from "@/utils/imageUrl";
+import { Blog } from "@/components/Blog";
 
 type Props = {
   params: Promise<{
@@ -18,15 +17,7 @@ const Page: FC<Props> = async ({ params }) => {
     const data = await getSpecificNews(blog);
     const { title, info, img } = data;
     const imgUrl = imageUrl(img);
-    return (
-      <div className={styles.wrapper}>
-        <div className={styles["image-wrapper"]}>
-          <Image src={imgUrl} alt={title} width={"200"} height={"200"} />
-        </div>
-        <div className={styles.title}>{title}</div>
-        <div>{info}</div>
-      </div>
-    );
+    return <Blog title={title} info={info} imgUrl={imgUrl} />;
   } catch (e: unknown) {
     console.error(e);
     return notFound();

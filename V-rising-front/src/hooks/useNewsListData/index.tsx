@@ -1,0 +1,1 @@
+export { useNewsListData } from "./useNewsListData";

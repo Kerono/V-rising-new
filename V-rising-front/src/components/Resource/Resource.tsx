@@ -6,7 +6,7 @@ import { AdditionalInfoCard } from "../AdditionalInfoCard";
 import { imageUrl } from "@/utils/imageUrl";
 import type { Info } from "@/variables";
 
-type Props = Omit<
+export type Props = Omit<
   ResourceResponce,
   "createdFromRecepieIds" | "usedForRecepieIds"
 >;

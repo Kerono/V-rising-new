@@ -1,41 +1,35 @@
 "use client";
-import styles from "./news.module.scss";
-import { useState, FC } from "react";
+import styles from "./newsCards.module.scss";
+import { FC } from "react";
 import { Card } from "../Card";
 import type { NewsList } from "@/variables";
-import { getNews } from "@/server/actions";
 import { Skeleton } from "../Skeleton";
 import { newsPerPage } from "@/variables";
 import { range } from "@/utils/range";
 import { imageUrl } from "@/utils/imageUrl";
 
-type Props = {
-  initialData: NewsList[];
+export type Props = {
+  newsList: NewsList[];
   totalCount: number;
+  isLoading: boolean;
+  onLoadMore: () => void;
 };
 
-export const News: FC<Props> = ({ initialData, totalCount }) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [news, setNews] = useState<NewsList[]>(initialData);
-  const [isLoading, setIsLoading] = useState(false);
-  const handleClick = async () => {
-    setIsLoading(true);
-    const nextPage = currentPage + 1;
-    const { data } = await getNews(nextPage);
-    setCurrentPage(nextPage);
-    setNews([...news, ...data]);
-    setIsLoading(false);
-  };
-
+export const NewsCards: FC<Props> = ({
+  newsList,
+  totalCount,
+  isLoading,
+  onLoadMore,
+}) => {
   const skeletonsForNews =
-    totalCount - news.length < newsPerPage
+    totalCount - newsList.length < newsPerPage
       ? totalCount % newsPerPage
       : newsPerPage;
 
   return (
     <>
       <div className={styles["cards-container"]}>
-        {news.map(({ id, title, img }) => {
+        {newsList.map(({ id, title, img }) => {
           const imgUrl = imageUrl(img);
           return (
             <Card key={id} href={`./news/${id}`} img={imgUrl} data={title} />
@@ -46,11 +40,11 @@ export const News: FC<Props> = ({ initialData, totalCount }) => {
             <Skeleton key={index} height="195px" />
           ))}
       </div>
-      {news.length < totalCount && (
+      {newsList.length < totalCount && (
         <button
           disabled={isLoading}
           className={styles.button}
-          onClick={handleClick}
+          onClick={onLoadMore}
         >
           {isLoading ? "loading..." : "add more"}
         </button>
