@@ -46,7 +46,6 @@ export async function getWeapons(): Promise<Weapons> {
 }
 
 export async function getWeapon(id: string): Promise<Weapon> {
-  console.log("call");
   return getData(`weapons/${id}`);
 }
 

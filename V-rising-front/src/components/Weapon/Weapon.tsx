@@ -34,12 +34,24 @@ const Weapon: FC<Props> = ({ name, boss, description, skills }) => {
             <Fragment key={id}>
               <div>
                 <div>{skill.name}</div>
-                <Image src={skillImgUrl} alt={id} width={40} height={40} />
+                <Image
+                  src={skillImgUrl}
+                  alt={id}
+                  width={40}
+                  height={40}
+                  unoptimized
+                />
               </div>
               <div>{description}</div>
               <div>
                 <div>{tierRequirementWeapon.name}</div>
-                <Image src={weaponImgUrl} alt={id} width={40} height={40} />
+                <Image
+                  src={weaponImgUrl}
+                  alt={id}
+                  width={40}
+                  height={40}
+                  unoptimized
+                />
               </div>
             </Fragment>
           );

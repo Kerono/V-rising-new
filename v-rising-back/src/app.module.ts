@@ -18,10 +18,12 @@ import { HealthModule } from './health/health.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'postgresdb',
+      port: 5432,
       username: 'postgres',
       password: 'nestjs',
       database: 'v-rising',
       autoLoadEntities: true,
+      entities: ['dist/**/*.entity{.js,.ts}'],
     }),
     BossesModule,
     HealthModule,

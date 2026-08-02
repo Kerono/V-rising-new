@@ -19,6 +19,7 @@ export const Card: FC<Props> = ({ href, img, data }) => {
         height={120}
         className={styles["card-img"]}
         alt={data}
+        unoptimized
       />
       <div>{data}</div>
     </Link>

@@ -11,7 +11,7 @@ type Props = {
 export const Item = ({ name, img, isCurrentlySelected, id }: Props) => {
   return (
     <>
-      <Image width={30} height={30} src={img} alt={name} />
+      <Image width={30} height={30} src={img} alt={name} unoptimized />
       {isCurrentlySelected ? (
         <div>{name}</div>
       ) : (

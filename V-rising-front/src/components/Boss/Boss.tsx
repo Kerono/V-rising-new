@@ -40,7 +40,7 @@ export const Boss: FC<Props> = ({
       value: (
         <Link className={styles["skills-wrapper"]} href={`/abilities/${id}`}>
           <div>{name}</div>
-          <Image src={imgUrl} alt={name} width={30} height={30} />
+          <Image src={imgUrl} alt={name} width={30} height={30} unoptimized />
         </Link>
       ),
     });
