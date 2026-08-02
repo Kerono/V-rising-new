@@ -23,6 +23,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=dev /node/app/dist /app/dist
 COPY package*.json ./ 
+COPY /public ./public
 RUN npm ci && npm cache clean --force
 ENV PORT=3000
 CMD ["node", "dist/main"]

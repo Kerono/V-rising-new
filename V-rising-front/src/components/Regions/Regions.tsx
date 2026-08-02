@@ -30,6 +30,7 @@ export const Regions: FC<TRegions> = ({ img, data }) => {
           width={400}
           height={200}
           priority={true}
+          unoptimized
         />
       </div>
     </div>

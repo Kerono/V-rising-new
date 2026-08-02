@@ -20,7 +20,13 @@ const Page = async () => {
           return (
             <Link className={styles.card} href={`/weapons/${id}`} key={id}>
               <div>{name}</div>
-              <Image width={30} height={30} src={imgUrl} alt={name} />
+              <Image
+                width={30}
+                height={30}
+                src={imgUrl}
+                alt={name}
+                unoptimized
+              />
             </Link>
           );
         })}

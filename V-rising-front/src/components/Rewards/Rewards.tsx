@@ -9,7 +9,7 @@ const Rewards: FC<Props> = ({ id, name, img, url }) => {
   return (
     <>
       <Link className={styles["rewards-content"]} href={url} key={id}>
-        <Image src={img} alt={name} width={30} height={30} />
+        <Image src={img} alt={name} width={30} height={30} unoptimized />
         <div>{name}</div>
       </Link>
     </>
