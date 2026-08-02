@@ -1,0 +1,58 @@
+name: CI-frontend-backend
+
+on:
+  pull_request:
+    types: ["opened", "reopened", "ready_for_review"]
+  push:
+    branches: ["main"]
+
+jobs:
+  frontend:
+    name: Frontend-CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./V-rising-front
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: tests
+        run: npm run test
+
+      - name: lint
+        run: npm run lint
+
+      - name: build
+        run: npm run build
+
+  backend:
+    name: Backend-CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./v-rising-back
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: tests
+        run: npm run test
+
+      - name: lint
+        run: npm run lint
+
+      - name: build
+        run: npm run build
