@@ -1,8 +1,13 @@
+$gap: 14px;
 .wrapper {
-  margin: 0 auto;
-  max-width: 60rem;
-  padding: 12px;
   display: flex;
-  gap: 8px;
-  align-items: flex-start;
+  flex-direction: column;
+  padding: 14px;
+  max-width: 60rem;
+  margin: 0 auto;
+  gap: $gap;
+  .image-wrapper {
+    display: flex;
+    gap: $gap;
+  }
 }

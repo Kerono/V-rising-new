@@ -1,0 +1,36 @@
+.laptop-and-higher {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 5px;
+  @media (max-width: 600px) {
+    & {
+      display: none;
+    }
+  }
+  .logo-link {
+    font-weight: bold;
+    font-size: 1.375rem;
+    text-decoration: none;
+    color: var(--text-color);
+    font-style: italic;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  .links-wrapper {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    gap: 12px;
+    font-size: 0.875rem;
+  }
+  .icon-button {
+    padding: 0;
+    display: flex;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+  }
+}

@@ -1,14 +1,23 @@
+$mobile-gap: -8px;
+
 .mobile {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
+  display: none;
+
+  @media (max-width: 600px) {
+    & {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+    }
+  }
 
   .logo-link {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 1.375rem;
     text-decoration: none;
     color: var(--text-color);
+    font-style: italic;
     &:hover {
       text-decoration: none;
     }
@@ -16,10 +25,19 @@
 
   .img-wrapper {
     display: flex;
-    padding: 8px;
+    padding: 0;
     color: var(--text-color);
     background-color: transparent;
     border: none;
+    position: relative;
     cursor: pointer;
+    &::before {
+      content: "";
+      position: absolute;
+      top: $mobile-gap;
+      left: $mobile-gap;
+      right: $mobile-gap;
+      bottom: $mobile-gap;
+    }
   }
 }

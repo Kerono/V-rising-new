@@ -7,6 +7,7 @@ import { Skeleton } from "../Skeleton";
 import { newsPerPage } from "@/variables";
 import { range } from "@/utils/range";
 import { imageUrl } from "@/utils/imageUrl";
+import { PushableButton } from "@/components/PushableButton";
 
 export type Props = {
   newsList: NewsList[];
@@ -36,18 +37,10 @@ export const NewsCards: FC<Props> = ({
           );
         })}
         {isLoading &&
-          range(skeletonsForNews).map((index) => (
-            <Skeleton key={index} height="195px" />
-          ))}
+          range(skeletonsForNews).map((index) => <Skeleton key={index} />)}
       </div>
       {newsList.length < totalCount && (
-        <button
-          disabled={isLoading}
-          className={styles.button}
-          onClick={onLoadMore}
-        >
-          {isLoading ? "loading..." : "add more"}
-        </button>
+        <PushableButton isLoading={isLoading} loadMore={onLoadMore} />
       )}
     </>
   );
