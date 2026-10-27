@@ -11,13 +11,13 @@ type CssVariables = {
 export const darkThemeStyles: CssVariables = {
   ["--text-color"]: "white",
   ["--background"]: "#1d1c1c",
-  ["--header-links-hover"]: "#d93e3e",
+  ["--header-links-hover"]: "hsl(0deg 67.1% 54.71%)",
 };
 
 export const lightThemeStyles: CssVariables = {
   ["--text-color"]: "black",
   ["--background"]: "white",
-  ["--header-links-hover"]: "darkgoldenrod",
+  ["--header-links-hover"]: "hsl(333deg 100% 50%)",
 };
 
 export const newsPerPage = 4;

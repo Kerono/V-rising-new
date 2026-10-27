@@ -21,7 +21,7 @@ const MobileHeader = () => {
         <Menu width={20} height={20} />
       </button>
 
-      {isOverlayOpen && <Overlay setOverlay={handleClick} />}
+      {isOverlayOpen && <Overlay handleOverlay={handleClick} />}
     </div>
   );
 };

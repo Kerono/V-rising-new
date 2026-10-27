@@ -9,12 +9,13 @@
 
 .card {
   display: flex;
+  text-align: center;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 12px;
+  padding: var(--inner-padding);
   border: solid gray;
-  border-radius: 12px;
+  border-radius: var(--outer-border);
   gap: 8px;
   color: var(--text-color);
   text-decoration: none;
@@ -26,4 +27,10 @@
   transform: scale(1.05);
   transition: transform 350ms;
   text-decoration: none;
+}
+
+.image {
+  width: 100%;
+  object-fit: cover;
+  border-radius: calc(var(--outer-border) - var(--inner-padding));
 }

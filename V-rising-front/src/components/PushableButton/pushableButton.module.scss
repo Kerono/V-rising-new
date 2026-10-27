@@ -1,0 +1,40 @@
+.pushable {
+  align-self: center;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  background: hsl(340deg 100% 32%);
+  margin-top: 6px;
+  cursor: pointer;
+  border-radius: 12px;
+  user-select: none;
+
+  .front {
+    padding: 12px 18px;
+    border-radius: inherit;
+    display: block;
+    background: hsl(345deg 100% 47%);
+    transform: translateY(-2px);
+    transition: transform 1200ms;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    text-transform: lowercase;
+  }
+
+  //TODO overlay dark color hsl(0deg 2.36% 24.9%)
+  &:hover .front {
+    transform: translateY(-4px);
+    transition: 150ms;
+  }
+  &:active .front {
+    transform: translateY(0);
+    transition: transform 50ms;
+  }
+  &:disabled {
+    pointer-events: none;
+
+    .front {
+      color: hsla(0, 0%, 0%, 0.5);
+    }
+  }
+}

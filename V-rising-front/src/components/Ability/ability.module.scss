@@ -7,6 +7,7 @@ $base-gap: 8px;
   display: flex;
   align-items: flex-start;
   gap: $base-gap;
+  text-align: justify;
 
   .title {
     font-size: 18px;

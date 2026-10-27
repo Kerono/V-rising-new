@@ -3,6 +3,11 @@ import Image from "next/image";
 import styles from "./card.module.scss";
 import { FC } from "react";
 
+const borderStyles = {
+  "--inner-padding": "12px",
+  "--outer-border": "18px",
+} as React.CSSProperties;
+
 export type Props = {
   href: string;
   img: string;
@@ -11,14 +16,14 @@ export type Props = {
 
 export const Card: FC<Props> = ({ href, img, data }) => {
   return (
-    <Link href={href} className={styles.card}>
+    <Link href={href} className={styles.card} style={borderStyles}>
       <Image
         src={img}
-        width={120}
+        width={100}
         priority
-        height={120}
-        className={styles["card-img"]}
+        height={150}
         alt={data}
+        className={styles.image}
         unoptimized
       />
       <div>{data}</div>

@@ -8,6 +8,7 @@ $base-gap: 8px;
   align-items: flex-start;
   justify-content: center;
   gap: $base-gap;
+  text-align: justify;
 
   .content {
     flex: 2;

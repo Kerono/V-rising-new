@@ -60,6 +60,9 @@ services:
       target: dev
     volumes:
       - /node/app/node_modules
+    environment:
+      - NEXT_PUBLIC_SERVER_BACKEND_URL=http://backend:3000/
+      - NEXT_PUBLIC_CLIENT_BACKEND_URL=http://localhost:3000/
     healthcheck:
       test:
         [

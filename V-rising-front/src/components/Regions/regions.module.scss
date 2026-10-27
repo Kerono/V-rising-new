@@ -1,34 +1,35 @@
+$gap: 14px;
+
 .wrapper {
   margin: 0 auto;
   max-width: 60rem;
-  padding: 12px;
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-
-  .title {
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .content {
-    flex: 1;
-  }
-
-  .regions-description {
-    margin: 8px 0;
-  }
+  padding: $gap;
+  text-align: justify;
 
   .image-wrapper {
-    position: sticky;
-    top: 20%;
-    flex: 1;
+    float: left;
+    width: 50%;
     min-width: 200px;
-
+    margin-right: $gap;
+    margin-top: $gap;
     img {
       width: 100%;
       height: 100%;
       border-radius: 8px;
+      display: block;
     }
+  }
+  .title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center;
+    margin-bottom: $gap;
+  }
+
+  .regions-description {
+    margin: $gap 0;
+  }
+  .regions-description:last-of-type {
+    margin-bottom: 0;
   }
 }

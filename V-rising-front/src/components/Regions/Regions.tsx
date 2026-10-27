@@ -9,30 +9,28 @@ export const Regions: FC<TRegions> = ({ img, data }) => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.content}>
-        <div className={styles.title}>Locations</div>
-        <div>
-          The world of V Rising is called Vardoran - it is split into eight
-          regions, each with their own unique enemies, trees, plants, resources
-          & loot.
-        </div>
-        {data.map(({ id, title, content }) => (
-          <div key={id} className={styles["regions-description"]}>
-            <div className={styles.title}>{title}</div>
-            <div>{content}</div>
-          </div>
-        ))}
+      <div className={styles.title}>Locations</div>
+      <div>
+        The world of V Rising is called Vardoran - it is split into eight
+        regions, each with their own unique enemies, trees, plants, resources &
+        loot.
       </div>
       <div className={styles["image-wrapper"]}>
         <Image
           src={imgUrl}
           alt="regions"
-          width={400}
-          height={200}
+          width={300}
+          height={300}
           priority={true}
           unoptimized
         />
       </div>
+      {data.map(({ id, title, content }) => (
+        <div key={id} className={styles["regions-description"]}>
+          <div className={styles.title}>{title}</div>
+          <div>{content}</div>
+        </div>
+      ))}
     </div>
   );
 };

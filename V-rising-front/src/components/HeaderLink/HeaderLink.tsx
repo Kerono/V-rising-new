@@ -7,14 +7,10 @@ type Props = LinksData;
 
 const HeaderLink: FC<Props> = ({ href, content }) => {
   return (
-    <div className={styles["links-wrapper"]}>
-      <Link className={styles.link} href={href}>
-        {content}
-      </Link>
-      <Link className={`${styles.link} ${styles["bold-link"]}`} href={href}>
-        {content}
-      </Link>
-    </div>
+    <Link className={styles.link} href={href}>
+      {content}
+      <div className={`${styles.link} ${styles.reveal}`}>{content}</div>
+    </Link>
   );
 };
 
